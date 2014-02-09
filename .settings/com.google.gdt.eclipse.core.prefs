@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=/Users/zhangjialiang/Dropbox/DropboxWorkspace/GiambiServer/json-simple-1.1.1.jar
+warSrcDir=war
+warSrcDirIsOutput=true
