@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -240,6 +241,28 @@ public class Util {
 	  return datastore;
   }
   
+  public static String HttpContentReader(InputStream input) {
+
+      BufferedReader in = new BufferedReader(new InputStreamReader(input));
+
+      String inputLine = "";
+      StringBuffer response = new StringBuffer();
+
+      try {
+          while ((inputLine = in.readLine()) != null) {
+              response.append(inputLine);
+          }
+      } catch (IOException e) {
+          // TODO Auto-generated catch block
+      }
+      try {
+          in.close();
+      } catch (IOException e) {
+          // TODO Auto-generated catch block
+      }
+      return response.toString();
+  }
+
   
   public static String getBody(HttpServletRequest request) throws IOException {
 
