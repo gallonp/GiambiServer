@@ -39,7 +39,13 @@ public class LoginServlet extends HttpServlet {
 		
 		Entity user = UserAccount.getSingleUser(username);
 		if (user!=null){
-			resp.getWriter().println("there is such a user!");
+			String dbUsername = (String) user.getProperty("username");
+			String dbPassword = (String) user.getProperty("password");
+			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
+				resp.getWriter().println("Login succeeded!");
+			} else {
+				resp.getWriter().println("Credential doesn't match database records!");
+			}
 		} else {
 			resp.getWriter().println("No such a user");
 		}
