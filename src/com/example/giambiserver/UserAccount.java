@@ -41,7 +41,6 @@ public class UserAccount {
 	 *            : get itemName
 	 * @return item entity
 	 */
-	@SuppressWarnings("deprecation")
 	public static Entity getSingleUser(String username) {
 		Query query = new Query("UserAccount");
 		Filter singleUserFilter = new Query.FilterPredicate("username", FilterOperator.EQUAL, username);

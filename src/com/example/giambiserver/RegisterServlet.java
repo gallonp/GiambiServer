@@ -33,13 +33,20 @@ public class RegisterServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		/*
 		// Need parse safty check!!!!!
 		String data = req.getParameter("json");
 		String decodedContent = "";
 		if (data != null) {
+			System.out.print("data is not null");
 			decodedContent = URLDecoder.decode(data, "UTF-8");
+		} else {
+			System.out.print("data is null");
 		}
 		// String content = Util.getBody(req);
+		 */
+		String data = "{\"username\":\"xinwen\",\"password\":\"1234\"}";
+		String decodedContent = URLDecoder.decode(data, "UTF-8");
 		JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
 		//test
 		resp.getWriter().print(decodedContent);
