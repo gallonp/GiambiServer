@@ -44,10 +44,10 @@ public class LoginServlet extends HttpServlet {
 			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
 				resp.getWriter().println("Login succeeded!");
 			} else {
-				resp.getWriter().println("Credential doesn't match database records!");
+				resp.getWriter().println("Password doesn't match username.");
 			}
 		} else {
-			resp.getWriter().println("No such a user");
+			resp.getWriter().println("Username hasn't been registered.");
 		}
 	}
 }

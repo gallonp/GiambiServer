@@ -17,20 +17,15 @@ public class CreateAccountServlet extends HttpServlet {
 			
 		public void doPost(HttpServletRequest req, HttpServletResponse resp)
 				throws IOException {
-			/*
 			String data = req.getParameter("json");
 			String decodedContent = "";
 			if (data != null) {
 				decodedContent = URLDecoder.decode(data, "UTF-8");
 			}
-			// String content = Util.getBody(req);
-			 */
-			String data = "{\"bankAccountNumber\":\"FFFFFFFF\", \"userAccount\":\"abc\", \"bankAccountName\":\"myBankAccount\"}";
-			String decodedContent = URLDecoder.decode(data, "UTF-8");
 			JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
 			//test
 			resp.getWriter().print(decodedContent);
-			//nullpointer
+			//test NullPointerException
 			String set = job.toJSONString();
 			String bankAccountNumber = (String) job.get("bankAccountNumber");
 			String bankAccountName = (String) job.get("bankAccountName");
