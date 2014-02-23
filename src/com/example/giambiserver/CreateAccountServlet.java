@@ -30,11 +30,15 @@ public class CreateAccountServlet extends HttpServlet {
 			String bankAccountNumber = (String) job.get("bankAccountNumber");
 			String bankAccountName = (String) job.get("bankAccountName");
 			String userAccount = (String) job.get("userAccount");
+			String bankName = (String) job.get("bankName");
+			String balance = (String) job.get("balance");
 			resp.setContentType("text/plain");
 			PrintWriter out = resp.getWriter();
 			Boolean createSuccess = false;
-			if (!bankAccountNumber.isEmpty() && !bankAccountName.isEmpty() && !userAccount.isEmpty()) {
-				createSuccess = BankAccount.createBankAccount(bankAccountNumber, bankAccountName, userAccount);
+			if (!bankAccountNumber.isEmpty() && !bankAccountName.isEmpty() &&
+					!userAccount.isEmpty() && !bankName.isEmpty() && !balance.isEmpty()) {
+				createSuccess = BankAccount.createBankAccount(bankAccountNumber, bankAccountName, userAccount,
+						bankName, balance);
 			} else {
 				out.print("Invalid request: missing credential");
 			}
