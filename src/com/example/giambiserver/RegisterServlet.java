@@ -28,18 +28,22 @@ public class RegisterServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		// Need parse safty check!!!!!
 		String data = req.getParameter("json");
 		String decodedContent = "";
 		if (data != null) {
 			decodedContent = URLDecoder.decode(data, "UTF-8");
 		} else {
-			System.out.print("Data is null");
+			throw new IOException("Data illegal");
 		}
 		JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
+		//test
 		resp.getWriter().print(decodedContent);
+		//Test NullPointerException
 		String set = job.toJSONString();
 		String password = (String) job.get("password");
 		String username = (String) job.get("username");
+		// need authenticate
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
 		Boolean createSuccess = false;

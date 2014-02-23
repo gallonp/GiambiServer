@@ -28,6 +28,8 @@ public class LoginServlet extends HttpServlet {
 		String decodedContent = "";
 		if (data != null) {
 			decodedContent = URLDecoder.decode(data, "UTF-8");
+		} else {
+			throw new IOException("Data illegal.");
 		}
 		// String content = Util.getBody(req);
 		JSONObject job = (JSONObject) JSONValue.parse(decodedContent);

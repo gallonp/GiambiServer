@@ -21,16 +21,15 @@ public class CreateAccountServlet extends HttpServlet {
 			String decodedContent = "";
 			if (data != null) {
 				decodedContent = URLDecoder.decode(data, "UTF-8");
+			} else {
+				throw new IOException("Data illegal.");
 			}
 			JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
-			//test
 			resp.getWriter().print(decodedContent);
-			//test NullPointerException
 			String set = job.toJSONString();
 			String bankAccountNumber = (String) job.get("bankAccountNumber");
 			String bankAccountName = (String) job.get("bankAccountName");
 			String userAccount = (String) job.get("userAccount");
-			// need authenticate
 			resp.setContentType("text/plain");
 			PrintWriter out = resp.getWriter();
 			Boolean createSuccess = false;
