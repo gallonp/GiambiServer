@@ -23,17 +23,11 @@ public class RegisterServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		
-        }
-        
-//		Entity user = UserAccount.getSingleUser("gallonpig");
-//		String usr = (String) user.getProperty("username");
-//		String pwd = (String) user.getProperty("password");
+		}
 		
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		// Need parse safty check!!!!!
 		String data = req.getParameter("json");
 		String decodedContent = "";
 		if (data != null) {
@@ -42,13 +36,10 @@ public class RegisterServlet extends HttpServlet {
 			System.out.print("Data is null");
 		}
 		JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
-		//test
 		resp.getWriter().print(decodedContent);
-		//Test NullPointerException
 		String set = job.toJSONString();
 		String password = (String) job.get("password");
 		String username = (String) job.get("username");
-		// need authenticate
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
 		Boolean createSuccess = false;
