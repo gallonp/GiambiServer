@@ -28,13 +28,13 @@ public class BankAccount {
 		}
 		
 		public static boolean updateBankAccount(String bankAccountName) {
-			Entity userAccount = getSingleBankAccount(bankAccountName);
-			if (userAccount == null) {
+			Entity bankAccount = getSingleBankAccount(bankAccountName);
+			if (bankAccount == null) {
 				return false;
 			} else {
-				userAccount.setProperty("bankAccountName", bankAccountName);
+				bankAccount.setProperty("bankAccountName", bankAccountName);
 			}
-			Util.persistEntity(userAccount);
+			Util.persistEntity(bankAccount);
 			return false;
 		}
 
