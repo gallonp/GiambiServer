@@ -12,41 +12,40 @@ public class BankAccount {
 		
 		public static boolean createBankAccount(String bankAccountNumber, String bankAccountName,
 				String userAccount, String bankName, String balance) {
-			Entity bankAccount = getSingleBankAccount(bankAccountNumber);
-			if (bankAccount == null) {
-				bankAccount = new Entity("BankAccount");
-				bankAccount.setProperty("bankAccountName", bankAccountName);
-				bankAccount.setProperty("bankAccountNumber", bankAccountNumber);
-				bankAccount.setProperty("userAccount", userAccount);
-				bankAccount.setProperty("bankName", bankName);
-				bankAccount.setProperty("balance", balance);
-			} else {
-				return false;
-			}
+//			Entity bankAccount = getBankAccountList(bankAccountNumber);
+//			if (bankAccount == null) {
+		    Entity bankAccount = new Entity("BankAccount");
+		    bankAccount.setProperty("bankAccountName", bankAccountName);
+			bankAccount.setProperty("bankAccountNumber", bankAccountNumber);
+			bankAccount.setProperty("userAccount", userAccount);
+			bankAccount.setProperty("bankName", bankName);
+			bankAccount.setProperty("balance", balance);
+//			} else {
+//				return false;
+//			}
 			Util.persistEntity(bankAccount);
 			return true;
 		}
 		
-		public static boolean updateBankAccount(String bankAccountName) {
-			Entity bankAccount = getSingleBankAccount(bankAccountName);
-			if (bankAccount == null) {
-				return false;
-			} else {
-				bankAccount.setProperty("bankAccountName", bankAccountName);
-			}
-			Util.persistEntity(bankAccount);
-			return false;
-		}
+//		public static boolean updateBankAccount(String bankAccountName) {
+//			Entity bankAccount = getSingleBankAccount(bankAccountName);
+//			if (bankAccount == null) {
+//				return false;
+//			} else {
+//				bankAccount.setProperty("bankAccountName", bankAccountName);
+//			}
+//			Util.persistEntity(bankAccount);
+//			return false;
+//		}
 
-		public static Entity getSingleBankAccount(String bankAccountName) {
+		public static List<Entity> getBankAccountList(String userAccount) {
 			Query query = new Query("BankAccount");
-			Filter singleBankAccountFilter = new Query.FilterPredicate("bankAccountName", FilterOperator.EQUAL, bankAccountName);
-			query.setFilter(singleBankAccountFilter);
+			Filter bankAccountFilter = new Query.FilterPredicate("userAccount", FilterOperator.EQUAL, userAccount);
+			query.setFilter(bankAccountFilter);
 			List<Entity> results = Util.getDatastoreServiceInstance()
 					.prepare(query).asList(FetchOptions.Builder.withDefaults());
-			if (!results.isEmpty()) {
-				return (Entity) results.remove(0);
-			}
-			return null;
+//			if (!results.isEmpty()) {
+				return results;
+//			}
 		}
 	}

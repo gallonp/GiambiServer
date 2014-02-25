@@ -20,6 +20,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	    <servlet-name>CreateAccountServer</servlet-name>
 	    <servlet-class>com.example.giambiserver.CreateAccountServlet</servlet-class>
 	</servlet>
+	<servlet>
+        <servlet-name>GetAccountServer</servlet-name>
+        <servlet-class>com.example.giambiserver.GetAccountServlet</servlet-class>
+    </servlet>
 	<servlet-mapping>
 		<servlet-name>GiambiServer</servlet-name>
 		<url-pattern>/giambiserver</url-pattern>
@@ -36,6 +40,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	    <servlet-name>CreateAccountServer</servlet-name>
 	    <url-pattern>/createaccount</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>GetAccountServer</servlet-name>
+        <url-pattern>/getaccount</url-pattern>
+    </servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
