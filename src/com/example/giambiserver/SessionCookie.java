@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
@@ -20,14 +21,19 @@ public class SessionCookie {
 			sessionCookie = new Entity("SessionCookie");
 			sessionCookie.setProperty("username", username);
 		}
-		sessionCookie.setProperty("cookieValue", cookie.getValue());
+		sessionCookie.setProperty("cookieValue", cookie.getName()+"="+cookie.getValue());
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, cookie.getMaxAge());
 		sessionCookie.setProperty("expiration", cal.getTime());
 		Util.persistEntity(sessionCookie);
 	}
 
-	public static boolean varifySessionCookie(String username, Cookie cookie) {
+	public static boolean varifySessionCookie (HttpServletRequest req, String username){
+		String cookieValue = req.getParameter("Cookie");
+		Cookie cookie = new Cookie ("auth-cookie",cookieValue);
+		return varifySessionCookie(username,cookie);
+	}
+	private static boolean varifySessionCookie(String username, Cookie cookie) {
 		Entity sessionCookie = getSessionCookie(username);
 		if (sessionCookie == null) {
 			return false;

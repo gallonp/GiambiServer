@@ -2,8 +2,10 @@ package com.example.giambiserver;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.Calendar;
 import java.util.logging.Level;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,11 +33,8 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			throw new IOException("Data illegal.");
 		}
-		// String content = Util.getBody(req);
 		JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
-		//test
 		resp.getWriter().print(decodedContent);
-		//nullpointer
 		String password = (String) job.get("password");
 		String username = (String) job.get("username");
 		
@@ -45,6 +44,12 @@ public class LoginServlet extends HttpServlet {
 			String dbPassword = (String) user.getProperty("password");
 			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
 				resp.getWriter().println("Login succeeded!");
+				Calendar cal = Calendar.getInstance();
+				String userAndTime = username +","+ cal.getTime().toString();
+				Cookie cookie = new Cookie("auth-cookie", userAndTime);
+				cookie.setMaxAge(120);
+				SessionCookie.createSessionCookie(username, cookie);
+				resp.addCookie(cookie);
 			} else {
 				resp.getWriter().println("Password doesn't match username.");
 			}
