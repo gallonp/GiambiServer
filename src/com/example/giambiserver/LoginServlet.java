@@ -2,8 +2,10 @@ package com.example.giambiserver;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.Calendar;
 import java.util.logging.Level;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,20 +30,31 @@ public class LoginServlet extends HttpServlet {
 		String decodedContent = "";
 		if (data != null) {
 			decodedContent = URLDecoder.decode(data, "UTF-8");
+		} else {
+			throw new IOException("Data illegal.");
 		}
-		// String content = Util.getBody(req);
 		JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
-		//test
 		resp.getWriter().print(decodedContent);
-		//nullpointer
 		String password = (String) job.get("password");
 		String username = (String) job.get("username");
 		
 		Entity user = UserAccount.getSingleUser(username);
 		if (user!=null){
-			resp.getWriter().println("there is such a user!");
+			String dbUsername = (String) user.getProperty("username");
+			String dbPassword = (String) user.getProperty("password");
+			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
+				resp.getWriter().println("Login succeeded!");
+				Calendar cal = Calendar.getInstance();
+				String userAndTime = username +","+ cal.getTime().toString();
+				Cookie cookie = new Cookie("auth-cookie", userAndTime);
+				cookie.setMaxAge(120);
+				SessionCookie.createSessionCookie(username, cookie);
+				resp.addCookie(cookie);
+			} else {
+				resp.getWriter().println("Password doesn't match username.");
+			}
 		} else {
-			resp.getWriter().println("No such a user");
+			resp.getWriter().println("Username hasn't been registered.");
 		}
 	}
 }

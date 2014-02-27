@@ -19,12 +19,7 @@ public class RegisterServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		
-        }
-        
-//		Entity user = UserAccount.getSingleUser("gallonpig");
-//		String usr = (String) user.getProperty("username");
-//		String pwd = (String) user.getProperty("password");
+		}
 		
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -34,16 +29,16 @@ public class RegisterServlet extends HttpServlet {
 		String decodedContent = "";
 		if (data != null) {
 			decodedContent = URLDecoder.decode(data, "UTF-8");
+		} else {
+			throw new IOException("Data illegal");
 		}
-		// String content = Util.getBody(req);
 		JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
 		//test
 		resp.getWriter().print(decodedContent);
-		//nullpointer
+		//Test NullPointerException
 		String set = job.toJSONString();
 		String password = (String) job.get("password");
 		String username = (String) job.get("username");
-		//
 		// need authenticate
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
