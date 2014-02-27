@@ -31,6 +31,7 @@ public class SessionCookie {
 	public static boolean varifySessionCookie (HttpServletRequest req, String username){
 		String cookieValue = req.getParameter("Cookie");
 		Cookie cookie = new Cookie ("auth-cookie",cookieValue);
+		cookie.setMaxAge(120);
 		return varifySessionCookie(username,cookie);
 	}
 	private static boolean varifySessionCookie(String username, Cookie cookie) {
@@ -44,6 +45,10 @@ public class SessionCookie {
 			Date expiration = (Date) sessionCookie.getProperty("expiration");
 			if (dbCookieValue.equals(cookie.getValue())
 					&& cal.getTime().before(expiration)) {
+				//update expiration time;
+				cal.add(Calendar.SECOND, cookie.getMaxAge());
+				sessionCookie.setProperty("expiration", cal.getTime());
+				Util.persistEntity(sessionCookie);
 				return true;
 			} else {
 				return false;
