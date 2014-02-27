@@ -3,8 +3,6 @@ package com.example.giambiserver;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
-import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
@@ -13,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-
-import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings("serial")
 public class RegisterServlet extends HttpServlet {
