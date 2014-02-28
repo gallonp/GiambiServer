@@ -62,7 +62,7 @@ public class CreateAccountServlet extends HttpServlet {
 						Cookie newCookie = new Cookie("id", cookieValue);
 						newCookie.setMaxAge(300);
 						SessionCookie.createSessionCookie(userAccount, newCookie);
-						out.println("Cookie created. \"name\"=\"id\", \"value\"=\"cookieValue\"");
+						out.println("Cookie created. \"name\"=\"id\", \"value\"=" + cookieValue);
 						doNext = true;
 					} else if (SessionCookie.varifySessionCookie(req, userAccount)) {
 						out.println("Cookie varified.");
@@ -73,10 +73,8 @@ public class CreateAccountServlet extends HttpServlet {
 							Util.deleteEntity(toDelete.getKey());
 							doNext = false;
 					}
-					System.out.println("doNext: " + doNext);
-					if (true) {
+					if (doNext) {
 						boolean toCreate = BankAccount.verifyDuplicateBankAccount(bankAccountNumber, bankName);
-						System.out.println(toCreate);
 						if (toCreate) {
 							if(createSuccess = BankAccount.createBankAccount(bankAccountNumber,
 									bankAccountName, userAccount, bankName, balance)) {
