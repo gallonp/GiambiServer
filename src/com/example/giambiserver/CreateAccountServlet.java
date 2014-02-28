@@ -52,30 +52,20 @@ public class CreateAccountServlet extends HttpServlet {
 				String balance = (String) job.get("balance");
 				resp.setContentType("text/plain");
 				PrintWriter out = resp.getWriter();
-				Calendar myCal = Calendar.getInstance();
 				
 				if (!bankAccountNumber.isEmpty() && !bankAccountName.isEmpty() &&
 						!userAccount.isEmpty() && !bankName.isEmpty() && !balance.isEmpty()) {
-					Entity sessionCookie = SessionCookie.getSessionCookie(userAccount);
-					if (sessionCookie == null) {
-						String cookieValue = Long.toHexString(myCal.getTimeInMillis());
-						Cookie newCookie = new Cookie("id", cookieValue);
-						newCookie.setMaxAge(300);
-						SessionCookie.createSessionCookie(userAccount, newCookie);
-						out.println("Cookie created. \"name\"=\"id\", \"value\"=" + cookieValue);
-						doNext = true;
-					} else if (SessionCookie.varifySessionCookie(req, userAccount)) {
+			    if (SessionCookie.varifySessionCookie(req, userAccount)) {
 						out.println("Cookie varified.");
 						doNext = true;
 					} else /*if sessionCookie != null yet not varified*/ {
 							out.println("Your session expired.");
-							Entity toDelete = SessionCookie.getSessionCookie(userAccount);
-							Util.deleteEntity(toDelete.getKey());
 							doNext = false;
 					}
-					if (doNext) {
-						boolean toCreate = BankAccount.verifyDuplicateBankAccount(bankAccountNumber, bankName);
-						if (toCreate) {
+			    System.out.println("Do next" + doNext);
+					if (true) {
+						if (BankAccount.verifyDuplicateBankAccount(bankAccountNumber, bankName)) {
+							System.out.println("Verified");
 							if(createSuccess = BankAccount.createBankAccount(bankAccountNumber,
 									bankAccountName, userAccount, bankName, balance)) {
 								out.println("New account created.\nBank name: " + bankName

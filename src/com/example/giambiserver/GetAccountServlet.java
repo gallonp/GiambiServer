@@ -49,19 +49,27 @@ public class GetAccountServlet extends HttpServlet {
 //        resp.getWriter().print(decodedContent);
         //nullpointer
         String userAccount = (String) job.get("userAccount");
-
-        List<Entity> accounts = BankAccount.getBankAccountList(userAccount);
-        Integer accountNum = accounts.size();
-//        JSONObject jsonObj = new JSONObject();
-        JSONArray jsonArr = new JSONArray();
-//        String[] temp = new String[accountNum];
-        if (accountNum != 0) {
-            for (int i = 0; i < accountNum; ++i) {
-                jsonArr.add(accounts.get(i).getProperties());
+//        boolean doNext;
+//        if (SessionCookie.varifySessionCookie(req, userAccount)) {
+//			respWriter.println("Cookie varified.");
+//			doNext = true;
+//		} else /*if sessionCookie != null yet not varified*/ {
+//				respWriter.println("Your session expired.");
+//				doNext = false;
+//		}
+ //       if (true) {
+        	List<Entity> accounts = BankAccount.getBankAccountList(userAccount);
+            Integer accountNum = accounts.size();
+//            JSONObject jsonObj = new JSONObject();
+            JSONArray jsonArr = new JSONArray();
+//            String[] temp = new String[accountNum];
+            if (accountNum != 0) {
+                for (int i = 0; i < accountNum; ++i) {
+                    jsonArr.add(accounts.get(i).getProperties());
+                }
+                jsonArr.writeJSONString(respWriter);
+            } else {
+                respWriter.println("No accounts.");
             }
-            jsonArr.writeJSONString(respWriter);
-        } else {
-            respWriter.println("No accounts.");
         }
     }
-}
