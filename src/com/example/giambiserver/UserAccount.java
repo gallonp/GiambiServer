@@ -15,7 +15,7 @@ public class UserAccount {
 		if (userAccount == null) {
 			userAccount = new Entity("UserAccount");
 			userAccount.setProperty("username", username);
-			userAccount.setProperty("password", password);
+			userAccount.setProperty("password", encryption(password));
 		} else {
 			return false;
 		}
@@ -28,7 +28,7 @@ public class UserAccount {
 		if (userAccount == null) {
 			return false;
 		} else {
-			userAccount.setProperty("password", password);
+			userAccount.setProperty("password", encryption(password));
 		}
 		Util.persistEntity(userAccount);
 		return false;
@@ -53,4 +53,22 @@ public class UserAccount {
 		return null;
 	}
 
+	public static int authentication(String username, String password) {
+		Entity user = UserAccount.getSingleUser(username);
+		if (user == null) {
+			return -1;
+		} else {
+			String dbUsername = (String) user.getProperty("username");
+			String dbPassword = (String) user.getProperty("password");
+			if (username.equalsIgnoreCase(dbUsername)
+				&& encryption(password).equalsIgnoreCase(dbPassword)) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+	}
+	private static String encryption(String password) {
+		return RC4.encrypt(password, RC4.key());
+	}
 }
