@@ -46,18 +46,18 @@ public class GetAccountServlet extends HttpServlet {
         JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
         //test
         PrintWriter respWriter = resp.getWriter();
-//        resp.getWriter().print(decodedContent);
+        resp.getWriter().print(decodedContent);
         //nullpointer
         String userAccount = (String) job.get("userAccount");
-//        boolean doNext;
-//        if (SessionCookie.varifySessionCookie(req, userAccount)) {
-//			respWriter.println("Cookie varified.");
-//			doNext = true;
-//		} else /*if sessionCookie != null yet not varified*/ {
-//				respWriter.println("Your session expired.");
-//				doNext = false;
-//		}
- //       if (true) {
+        boolean doNext;
+        if (SessionCookie.varifySessionCookie(req, userAccount)) {
+			respWriter.println("Cookie varified.");
+			doNext = true;
+		} else /*if sessionCookie != null yet not varified*/ {
+				respWriter.println("Your session expired.");
+				doNext = false;
+		}
+        if (doNext) {
         	List<Entity> accounts = BankAccount.getBankAccountList(userAccount);
             Integer accountNum = accounts.size();
 //            JSONObject jsonObj = new JSONObject();
@@ -73,3 +73,4 @@ public class GetAccountServlet extends HttpServlet {
             }
         }
     }
+}
