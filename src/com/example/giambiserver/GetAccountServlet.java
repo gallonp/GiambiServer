@@ -17,8 +17,8 @@ import org.json.simple.JSONValue;
 import com.google.appengine.api.datastore.Entity;
 
 /**
+ * @version 1.1 Last authored 2/28/14
  * @author cwl
- *
  */
 public class GetAccountServlet extends HttpServlet {
 
@@ -26,16 +26,9 @@ public class GetAccountServlet extends HttpServlet {
     private static final String[] FIELDS = {"bankAccountName", "bankAccountNumber",
                                             "userAccount", "bankName", "balance"};
 
-    /**
-     * Constructor.
-     */
-    public GetAccountServlet() {
-        // TODO 自动生成的构造函数存根
-    }
-
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-     // TODO 自动生成的构造函数存根
+     // TODO
     }
 
     @SuppressWarnings("unchecked")
@@ -47,28 +40,37 @@ public class GetAccountServlet extends HttpServlet {
         if (data != null) {
             decodedContent = URLDecoder.decode(data, "UTF-8");
         } else {
-            throw new IOException("Data illegal.");
+            throw new IOException("Data is null.");
         }
         // String content = Util.getBody(req);
         JSONObject job = (JSONObject) JSONValue.parse(decodedContent);
         //test
         PrintWriter respWriter = resp.getWriter();
-//        resp.getWriter().print(decodedContent);
+        resp.getWriter().print(decodedContent);
         //nullpointer
         String userAccount = (String) job.get("userAccount");
-
-        List<Entity> accounts = BankAccount.getBankAccountList(userAccount);
-        Integer accountNum = accounts.size();
-//        JSONObject jsonObj = new JSONObject();
-        JSONArray jsonArr = new JSONArray();
-//        String[] temp = new String[accountNum];
-        if (accountNum != 0) {
-            for (int i = 0; i < accountNum; ++i) {
-                jsonArr.add(accounts.get(i).getProperties());
+        boolean doNext;
+        if (SessionCookie.varifySessionCookie(req, userAccount)) {
+			respWriter.println("Cookie varified.");
+			doNext = true;
+		} else /*if sessionCookie != null yet not varified*/ {
+				respWriter.println("Your session expired.");
+				doNext = false;
+		}
+        if (doNext) {
+        	List<Entity> accounts = BankAccount.getBankAccountList(userAccount);
+            Integer accountNum = accounts.size();
+//            JSONObject jsonObj = new JSONObject();
+            JSONArray jsonArr = new JSONArray();
+//            String[] temp = new String[accountNum];
+            if (accountNum != 0) {
+                for (int i = 0; i < accountNum; ++i) {
+                    jsonArr.add(accounts.get(i).getProperties());
+                }
+                jsonArr.writeJSONString(respWriter);
+            } else {
+                respWriter.println("No accounts.");
             }
-            jsonArr.writeJSONString(respWriter);
-        } else {
-            respWriter.println("No accounts.");
         }
     }
 }
