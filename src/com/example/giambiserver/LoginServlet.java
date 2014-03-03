@@ -38,30 +38,14 @@ public class LoginServlet extends HttpServlet {
 		String password = (String) job.get("password");
 		String username = (String) job.get("username");
 		
-		switch (UserAccount.authentication(username, password)) {
-			case 1:
-				resp.getWriter().println("Login succeeded!");
-				Calendar cal = Calendar.getInstance();
-				String userAndTime = username +","+ cal.getTime().toString();
-				Cookie cookie = new Cookie("auth-cookie", userAndTime);
-				cookie.setMaxAge(120);
-				SessionCookie.createSessionCookie(username, cookie);
-				resp.addCookie(cookie);
-				break;
-			case 0:
-				resp.getWriter().println("Password doesn't match username.");
-				break;
-			default:
-				resp.getWriter().println("Username hasn't been registered.");	
-		}
-		/*	Entity user = UserAccount.getSingleUser(username);
-			if (user!=null){
+		Entity user = UserAccount.getSingleUser(username);
+		if (user!=null){
 			String dbUsername = (String) user.getProperty("username");
 			String dbPassword = (String) user.getProperty("password");
 			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
 				resp.getWriter().println("Login succeeded!");
 				Calendar cal = Calendar.getInstance();
-				String userAndTime = username +","+ Long.toHexString(cal.getTimeInMillis());
+				String userAndTime = username +","+ cal.getTime().toString();
 				Cookie cookie = new Cookie("auth-cookie", userAndTime);
 				cookie.setMaxAge(120);
 				SessionCookie.createSessionCookie(username, cookie);
@@ -71,6 +55,6 @@ public class LoginServlet extends HttpServlet {
 			}
 		} else {
 			resp.getWriter().println("Username hasn't been registered.");
-		}*/
+		}
 	}
 }
