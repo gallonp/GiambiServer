@@ -34,7 +34,6 @@ public class SessionCookie {
 		cookie.setMaxAge(120);
 		return varifySessionCookie(username,cookie);
 	}
-	
 	private static boolean varifySessionCookie(String username, Cookie cookie) {
 		Entity sessionCookie = getSessionCookie(username);
 		if (sessionCookie == null) {

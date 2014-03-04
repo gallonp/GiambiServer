@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
 			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
 				resp.getWriter().println("Login succeeded!");
 				Calendar cal = Calendar.getInstance();
-				String userAndTime = username +","+ Long.toHexString(cal.getTimeInMillis());
+				String userAndTime = username +","+ cal.getTime().toString();
 				Cookie cookie = new Cookie("auth-cookie", userAndTime);
 				cookie.setMaxAge(120);
 				SessionCookie.createSessionCookie(username, cookie);

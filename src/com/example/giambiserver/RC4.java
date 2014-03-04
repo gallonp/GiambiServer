@@ -1,10 +1,7 @@
 package com.example.giambiserver;
 
 public class RC4 {
-	
-	public static String key(){
-		return "beef";
-	}
+
 	/**
 	 * Key String have to be hex String
 	 */
