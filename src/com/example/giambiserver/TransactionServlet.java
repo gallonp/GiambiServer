@@ -52,12 +52,12 @@ public class TransactionServlet extends HttpServlet {
             }
         } else {
             String username = req.getParameter("username");
-            if (SessionCookie.verifySessionCookie(req, username)){
+           // if (SessionCookie.verifySessionCookie(req, username)){
                 Iterable<Entity> entities = Transaction.getAllUserTransactions(username);
                 out.print(Util.writeJSON(entities));
-            } else {
-                out.print("Invalid request: Timed out");
-            }
+            //} else {
+            //    out.print("Invalid request: Timed out");
+            //}
         }
         
     }
@@ -76,7 +76,7 @@ public class TransactionServlet extends HttpServlet {
             throw new IOException("Data illegal");
         }
         JSONObject json = (JSONObject) JSONValue.parse(decodedContent);
-        String name = (String) json.get("name");
+        String name = (String) json.get("transactionName");
         String username = (String) json.get("username");
         if (name == null || username == null || name.isEmpty()
                 || username.isEmpty()) {
@@ -91,7 +91,7 @@ public class TransactionServlet extends HttpServlet {
         }
 
         Date updateDate = new Date();
-        String amount = (String) json.get("amount");
+        String amount = ((Double) json.get("amount")).toString();
         String category = (String) json.get("category");
         String createDate = (String) json.get("createDate");
         String merchant = (String) json.get("merchant");
