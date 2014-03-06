@@ -42,13 +42,22 @@ public class Transaction {
      * Return all the Transactions
      * 
      * @param kind
-     *            : of kind product
-     * @return products
+     * @return transactions
      */
     public static Iterable<Entity> getAllTransactions() {
         return Util.listEntities("Transaction", null, null);
     }
 
+    /**
+     * Return all transactions for a particular username
+     * 
+     * @param String username
+     * @return List<Entity> transactions
+     */
+    public static Iterable<Entity> getAllUserTransactions(String username){
+        return Util.listEntities("Transaction", "username", username);
+    }
+    
     /**
      * Get transaction entity
      * 

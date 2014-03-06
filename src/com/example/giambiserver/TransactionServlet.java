@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
 import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings("serial")
@@ -26,30 +26,40 @@ public class TransactionServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Cookie[] cookies = req.getCookies(); // Unable to check cookie validity
-        String id = req.getParameter("id");
         resp.setContentType("text/plain");
         PrintWriter out = resp.getWriter();
 
-        if (id == null || id.isEmpty()) {
-            out.print("Invalid request: id is empty");
-            logger.log(Level.WARNING, "Invalid request: id is empty");
-        }
-        long idLong = 0;
-        try {
-            idLong = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            logger.log(Level.WARNING, "Invalid request: id is null");
-        }
-        Entity transaction = Transaction.getTransaction(idLong);
-        if (transaction == null){
-            logger.log(Level.WARNING, "Invalid request: Transaction id: " + idLong + " can not be found.");
-            out.print("Invalid request: Transaction id: " + idLong + " can not be found.");
+        String id = req.getParameter("id");
+        if (id != null){
+            if (id.isEmpty()) {
+                out.print("Invalid request: id is empty");
+                logger.log(Level.WARNING, "Invalid request: id is empty");
+            }
+            long idLong = 0;
+            try {
+                idLong = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                logger.log(Level.WARNING, "Invalid request: id is null");
+            }
+            Entity transaction = Transaction.getTransaction(idLong);
+            if (transaction == null){
+                logger.log(Level.WARNING, "Invalid request: Transaction id: " + idLong + " can not be found.");
+                out.print("Invalid request: Transaction id: " + idLong + " can not be found.");
+            } else {
+                logger.log(Level.INFO, "Transaction query success. Transaction id: " + idLong + " returned.");
+                String json = Util.writeJSON(transaction);
+                out.print(json);
+            }
         } else {
-            logger.log(Level.INFO, "Transaction query success. Transaction id: " + idLong + " returned.");
-            String json = Util.writeJSON(transaction);
-            out.print(json);
+            String username = req.getParameter("username");
+            if (SessionCookie.verifySessionCookie(req, username)){
+                Iterable<Entity> entities = Transaction.getAllUserTransactions(username);
+                out.print(Util.writeJSON(entities));
+            } else {
+                out.print("Invalid request: Timed out");
+            }
         }
+        
     }
 
     @Override
