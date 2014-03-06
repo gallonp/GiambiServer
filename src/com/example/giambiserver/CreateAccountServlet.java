@@ -10,6 +10,7 @@ import javax.servlet.http.*;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+@SuppressWarnings("serial")
 public class CreateAccountServlet extends HttpServlet {
 	
 		private static final Logger logger = Logger
