@@ -20,9 +20,9 @@ public class Transaction {
      * @param map
      * @return true if a transaction is changed or created, false otherwise.
      */
-    public static boolean createOrUpdateTransaction(String key,
+    public static long createOrUpdateTransaction(long id,
             Map<String, String> map) {
-        Entity transaction = getTransaction(key);
+        Entity transaction = getTransaction(id);
         if (transaction == null) {
             transaction = new Entity("Transaction");
         }
@@ -33,9 +33,9 @@ public class Transaction {
                 transaction.setProperty(property, map.get(property));
             }
             Util.persistEntity(transaction);
-            return true;
+            return transaction.getKey().getId();
         }
-        return false;
+        return Long.MAX_VALUE;
     }
 
     /**
@@ -56,8 +56,8 @@ public class Transaction {
      *            of transaction
      * @return: Transaction entity
      */
-    public static Entity getTransaction(String id) {
-        Key key = KeyFactory.stringToKey(id);
+    public static Entity getTransaction(long id) {
+        Key key = KeyFactory.createKey("Transaction", id);
         return Util.findEntity(key);
     }
 
@@ -68,8 +68,8 @@ public class Transaction {
      *            : product to be deleted
      * @return status string
      */
-    public static String deleteProduct(String id) {
-        Key key = KeyFactory.stringToKey(id);
+    public static String deleteProduct(long id) {
+        Key key = KeyFactory.createKey("Transaction", id);
         Util.deleteEntity(key);
         return "Product deleted successfully";
 

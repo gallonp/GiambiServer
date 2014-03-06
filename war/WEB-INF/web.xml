@@ -1,49 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
 	<servlet>
 		<servlet-name>GiambiServer</servlet-name>
 		<servlet-class>com.example.giambiserver.GiambiServerServlet</servlet-class>
 	</servlet>
 	<servlet>
-	   	<servlet-name>RegisterServer</servlet-name>
+		<servlet-name>RegisterServer</servlet-name>
 		<servlet-class>com.example.giambiserver.RegisterServlet</servlet-class>
 	</servlet>
-		<servlet>
-	   	<servlet-name>LoginServer</servlet-name>
+	<servlet>
+		<servlet-name>LoginServer</servlet-name>
 		<servlet-class>com.example.giambiserver.LoginServlet</servlet-class>
 	</servlet>
 	<servlet>
-	    <servlet-name>CreateAccountServer</servlet-name>
-	    <servlet-class>com.example.giambiserver.CreateAccountServlet</servlet-class>
+		<servlet-name>CreateAccountServer</servlet-name>
+		<servlet-class>com.example.giambiserver.CreateAccountServlet</servlet-class>
 	</servlet>
 	<servlet>
-        <servlet-name>GetAccountServer</servlet-name>
-        <servlet-class>com.example.giambiserver.GetAccountServlet</servlet-class>
-    </servlet>
+		<servlet-name>GetAccountServer</servlet-name>
+		<servlet-class>com.example.giambiserver.GetAccountServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>TransactionServer</servlet-name>
+		<servlet-class>com.example.giambiserver.TransactionServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>GiambiServer</servlet-name>
 		<url-pattern>/giambiserver</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-	    <servlet-name>RegisterServer</servlet-name>
+		<servlet-name>RegisterServer</servlet-name>
 		<url-pattern>/register</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-	    <servlet-name>LoginServer</servlet-name>
+		<servlet-name>LoginServer</servlet-name>
 		<url-pattern>/login</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-	    <servlet-name>CreateAccountServer</servlet-name>
-	    <url-pattern>/createaccount</url-pattern>
+		<servlet-name>CreateAccountServer</servlet-name>
+		<url-pattern>/createaccount</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-        <servlet-name>GetAccountServer</servlet-name>
-        <url-pattern>/getaccount</url-pattern>
-    </servlet-mapping>
+		<servlet-name>GetAccountServer</servlet-name>
+		<url-pattern>/getaccount</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TransactionServer</servlet-name>
+		<url-pattern>/transactions</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

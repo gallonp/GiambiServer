@@ -35,9 +35,9 @@ public class CreateAccountServlet extends HttpServlet {
 			String bankName = (String) job.get("bankName");
 			String balance = (String) job.get("balance");
 			//Check if cookie is valid and not expired
-			if (SessionCookie.varifySessionCookie(req,userAccount)){
-				
-			}
+			//if (SessionCookie.verifySessionCookie(req,userAccount)){
+				//Needs username not userAccount
+			//}
 			resp.setContentType("text/plain");
 			PrintWriter out = resp.getWriter();
 			Boolean createSuccess = false;

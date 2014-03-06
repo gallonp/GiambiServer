@@ -28,13 +28,13 @@ public class SessionCookie {
 		Util.persistEntity(sessionCookie);
 	}
 
-	public static boolean varifySessionCookie (HttpServletRequest req, String username){
+	public static boolean verifySessionCookie (HttpServletRequest req, String username){
 		String cookieValue = req.getParameter("Cookie");
 		Cookie cookie = new Cookie ("auth-cookie",cookieValue);
 		cookie.setMaxAge(120);
-		return varifySessionCookie(username,cookie);
+		return verifySessionCookie(username,cookie);
 	}
-	private static boolean varifySessionCookie(String username, Cookie cookie) {
+	private static boolean verifySessionCookie(String username, Cookie cookie) {
 		Entity sessionCookie = getSessionCookie(username);
 		if (sessionCookie == null) {
 			return false;

@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+
 
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -177,6 +179,13 @@ public class Util {
   	sb.append("]}");
   	return sb.toString();
   }
+  
+  public static String writeJSON(Entity entity){
+      List<Entity> entities = new ArrayList<>();
+      entities.add(entity);
+      return writeJSON(entities);
+  }
+  
   
   /**
 	 * Retrieves Parent and Child entities into JSON String
