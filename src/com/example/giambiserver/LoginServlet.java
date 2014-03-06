@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
 				resp.getWriter().println("Login succeeded!");
 				Calendar cal = Calendar.getInstance();
 				String userAndTime = username +","+ cal.getTime().toString();
-				Cookie cookie = new Cookie("auth-cookie", userAndTime);
+				Cookie cookie = new Cookie("auth-cookie", Integer.toString(userAndTime.hashCode()));
 				cookie.setMaxAge(120);
 				SessionCookie.createSessionCookie(username, cookie);
 				resp.addCookie(cookie);
