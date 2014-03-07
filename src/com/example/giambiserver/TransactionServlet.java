@@ -57,7 +57,7 @@ public class TransactionServlet extends HttpServlet {
                 out.print(json);
             }
 
-        } else if (accountNumber != null && username != null) {
+        } else if (accountNumber != null && username != null && !accountNumber.isEmpty()) {
             if (SessionCookie.verifySessionCookie(req, username)) {
                 Iterable<Entity> entities = Transaction
                         .getAllUserTransactions(accountNumber);
@@ -74,7 +74,7 @@ public class TransactionServlet extends HttpServlet {
                 out.print("Invalid request: Timed out");
             }
         } else {
-            out.print("Invalid request: No parameters");
+            out.print("Invalid request: No valid parameters");
         }
     }
 
