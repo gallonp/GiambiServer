@@ -136,6 +136,7 @@ public class TransactionServlet extends HttpServlet {
         if (id != null && !id.isEmpty()){
             try{
             transactionId = Long.parseLong(id);
+            map.remove("createDate");
             } catch (NumberFormatException e){
                 logger.log(Level.WARNING, "Invalid transaction id: Parse id error.");
             }

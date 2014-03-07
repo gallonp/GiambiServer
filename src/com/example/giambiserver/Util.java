@@ -90,6 +90,7 @@ public class Util {
   	try {	  
   	  return datastore.get(key);
   	} catch (EntityNotFoundException e) {
+  	  logger.log(Level.WARNING, "Entity not found for " + key.getId());
   	  return null;
   	}
   }
