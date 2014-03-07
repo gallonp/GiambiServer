@@ -141,7 +141,7 @@ public class TransactionServlet extends HttpServlet {
             }
         }
         transactionId = Transaction.createOrUpdateTransaction(
-                Long.MAX_VALUE, map);
+                transactionId, map);
         
         if (transactionId != Long.MAX_VALUE) {
             logger.log(Level.INFO, "transaction saved." + " id: "
