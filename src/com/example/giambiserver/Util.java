@@ -107,14 +107,38 @@ public class Util {
 	 */
   public static Iterable<Entity> listEntities(String kind, String searchBy,
 			String searchFor) {
-  	logger.log(Level.INFO, "Search entities based on search criteria");
-  	Query q = new Query(kind);
-  	if (searchFor != null && !"".equals(searchFor)) {
-  	  q.addFilter(searchBy, FilterOperator.EQUAL, searchFor);
-  	}
-  	PreparedQuery pq = datastore.prepare(q);
-  	return pq.asIterable();
+  	return listEntitiesFilters(kind, searchBy, searchFor);
   }
+  
+  /***
+   * Search entities based on search criteria, may have multiple filters
+   * @param kind
+   * @param searchBy
+   *            : Searching Criteria (Property)
+   * @param searchFor
+   *            : Searching Value (Property Value)
+   * @param optional additional searchBy
+   * @param optional additional searchFor
+   * @param ...
+   * @return List all entities of a kind from the cache or datastore (if not
+   *         in cache) with the specified properties
+   */
+public static Iterable<Entity> listEntitiesFilters(String kind, String searchBy,
+                  String searchFor, String... filters) {
+  logger.log(Level.INFO, "Search entities based on search criteria: " + searchBy + " = " + searchFor + " and other filters");
+  Query q = new Query(kind);
+  if (searchFor != null && !"".equals(searchFor)) {
+    q.addFilter(searchBy, FilterOperator.EQUAL, searchFor);
+  }
+  if (filters!= null && filters.length >=2 && filters.length%2 == 0){
+      for (int i=0; i<filters.length/2; i++){
+          i = i*2;
+          q.addFilter(filters[i], FilterOperator.EQUAL, filters[i+1]);
+      }
+  }
+  PreparedQuery pq = datastore.prepare(q);
+  return pq.asIterable();
+}
   
   
   /**

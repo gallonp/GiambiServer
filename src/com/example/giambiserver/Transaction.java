@@ -59,12 +59,12 @@ public class Transaction {
     }
     
     /**
-     * Return all transactions for a particular account
+     * Return all transactions for a particular account under a user
      * @param String account
      * @return List<Entity> transactions
      */
-    public static Iterable<Entity> getAccountTransactions(String accountNumber){
-        return Util.listEntities("Transaction", "accountNumber", accountNumber);
+    public static Iterable<Entity> getAccountTransactions(String username, String accountNumber){
+        return Util.listEntitiesFilters("Transaction", "username", username, "accountNumber", accountNumber);
     }
     
     /**

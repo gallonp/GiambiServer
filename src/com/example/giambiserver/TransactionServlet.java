@@ -73,6 +73,8 @@ public class TransactionServlet extends HttpServlet {
             } else {
                 out.print("Invalid request: Timed out");
             }
+        } else {
+            out.print("Invalid request: No parameters");
         }
     }
 
