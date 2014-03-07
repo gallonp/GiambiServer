@@ -30,7 +30,9 @@ public class TransactionServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         String id = req.getParameter("id");
-        if (id != null){
+        String username = req.getParameter("username");
+        String accountNumber = req.getParameter("accountNumber");
+        if (id != null) {
             if (id.isEmpty()) {
                 out.print("Invalid request: id is empty");
                 logger.log(Level.WARNING, "Invalid request: id is empty");
@@ -42,24 +44,36 @@ public class TransactionServlet extends HttpServlet {
                 logger.log(Level.WARNING, "Invalid request: id is null");
             }
             Entity transaction = Transaction.getTransaction(idLong);
-            if (transaction == null){
-                logger.log(Level.WARNING, "Invalid request: Transaction id: " + idLong + " can not be found.");
-                out.print("Invalid request: Transaction id: " + idLong + " can not be found.");
+            if (transaction == null) {
+                logger.log(Level.WARNING, "Invalid request: Transaction id: "
+                        + idLong + " can not be found.");
+                out.print("Invalid request: Transaction id: " + idLong
+                        + " can not be found.");
             } else {
-                logger.log(Level.INFO, "Transaction query success. Transaction id: " + idLong + " returned.");
+                logger.log(Level.INFO,
+                        "Transaction query success. Transaction id: " + idLong
+                                + " returned.");
                 String json = Util.writeJSON(transaction);
                 out.print(json);
             }
-        } else {
-            String username = req.getParameter("username");
-           // if (SessionCookie.verifySessionCookie(req, username)){
-                Iterable<Entity> entities = Transaction.getAllUserTransactions(username);
+
+        } else if (accountNumber != null && username != null) {
+            if (SessionCookie.verifySessionCookie(req, username)) {
+                Iterable<Entity> entities = Transaction
+                        .getAllUserTransactions(accountNumber);
                 out.print(Util.writeJSON(entities));
-            //} else {
-            //    out.print("Invalid request: Timed out");
-            //}
+            } else {
+                out.print("Invalid request: Timed out");
+            }
+        } else if (username != null) {
+            if (SessionCookie.verifySessionCookie(req, username)) {
+                Iterable<Entity> entities = Transaction
+                        .getAllUserTransactions(username);
+                out.print(Util.writeJSON(entities));
+            } else {
+                out.print("Invalid request: Timed out");
+            }
         }
-        
     }
 
     @Override

@@ -59,6 +59,15 @@ public class Transaction {
     }
     
     /**
+     * Return all transactions for a particular account
+     * @param String account
+     * @return List<Entity> transactions
+     */
+    public static Iterable<Entity> getAccountTransactions(String accountNumber){
+        return Util.listEntities("Transaction", "accountNumber", accountNumber);
+    }
+    
+    /**
      * Get transaction entity
      * 
      * @param id
