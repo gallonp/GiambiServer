@@ -231,9 +231,9 @@ public static Iterable<Entity> listEntitiesFilters(String kind, String searchBy,
   	  Map<String, Object> properties = result.getProperties();
   	  sb.append("{");
   	  if (result.getKey().getName() == null)
-  		sb.append("\"name\" : \"" + result.getKey().getId() + "\",");
+  		sb.append("\"id\" : \"" + result.getKey().getId() + "\",");
   	  else
-  		sb.append("\"name\" : \"" + result.getKey().getName() + "\",");
+  		sb.append("\"id\" : \"" + result.getKey().getName() + "\",");
   	  for (String key : properties.keySet()) {
   		sb.append("\"" + key + "\" : \"" + properties.get(key) + "\",");
   	  }

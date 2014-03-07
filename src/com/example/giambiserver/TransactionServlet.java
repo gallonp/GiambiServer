@@ -92,9 +92,9 @@ public class TransactionServlet extends HttpServlet {
             throw new IOException("Data illegal");
         }
         JSONObject json = (JSONObject) JSONValue.parse(decodedContent);
-        String name = (String) json.get("transactionName");
+        String transactionName = (String) json.get("transactionName");
         String username = (String) json.get("username");
-        if (name == null || username == null || name.isEmpty()
+        if (transactionName == null || username == null || transactionName.isEmpty()
                 || username.isEmpty()) {
             out.print("Invalid request: missing credential");
             logger.log(Level.WARNING, "Missing Credentials in Transaction");
@@ -125,7 +125,7 @@ public class TransactionServlet extends HttpServlet {
 
         Map<String, String> map = new HashMap<>();
         map.put("username", username);
-        map.put("name", name);
+        map.put("transactionName", transactionName);
         map.put("updateDate", updateDate.toString());
         map.put("createDate", createDate);
         map.put("category", category);
