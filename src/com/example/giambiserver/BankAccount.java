@@ -28,7 +28,7 @@ public class BankAccount {
         // } else {
         // return false;
         // }
-        Util.persistEntity(bankAccount);
+            Util.persistEntity(bankAccount);
         return true;
     }
 
@@ -64,6 +64,7 @@ public class BankAccount {
                 balance = balance - Double.parseDouble(amount);
                 bankAccount.setProperty("balance", balance.toString());
                 Util.persistEntity(bankAccount);
+                return;
             }
         }
         logger.log(Level.WARNING, "Bank account: " + accountNumber

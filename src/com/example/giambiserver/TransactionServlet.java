@@ -61,7 +61,7 @@ public class TransactionServlet extends HttpServlet {
                 && !accountNumber.isEmpty()) {
             if (SessionCookie.verifySessionCookie(req, username)) {
                 Iterable<Entity> entities = Transaction
-                        .getAllUserTransactions(accountNumber);
+                        .getAccountTransactions(username, accountNumber);
                 out.print(Util.writeJSON(entities));
             } else {
                 out.print("Invalid request: Timed out");
