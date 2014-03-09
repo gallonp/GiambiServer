@@ -41,7 +41,8 @@ public class TransactionServlet extends HttpServlet {
             try {
                 idLong = Long.parseLong(id);
             } catch (NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid request: id is null");
+                logger.log(Level.WARNING, "Invalid request: id is not a number");
+                return;
             }
             Entity transaction = Transaction.getTransaction(idLong);
             if (transaction == null) {
@@ -49,6 +50,7 @@ public class TransactionServlet extends HttpServlet {
                         + idLong + " can not be found.");
                 out.print("Invalid request: Transaction id: " + idLong
                         + " can not be found.");
+                return;
             } else {
                 logger.log(Level.INFO,
                         "Transaction query success. Transaction id: " + idLong
@@ -105,6 +107,7 @@ public class TransactionServlet extends HttpServlet {
         // Checks for session cookie
         if (!SessionCookie.verifySessionCookie(req, username)) {
             out.print("Invalid request: Timed out");
+            return;
         }
 
         Date updateDate = new Date();
@@ -151,6 +154,7 @@ public class TransactionServlet extends HttpServlet {
                     transactionId, map);
         } catch (IllegalArgumentException e) {
             out.print("Invalid request: invalid bank account, transaction NOT saved.");
+            return;
         }
         
         if (transactionId != 0) {

@@ -42,11 +42,11 @@ public class Transaction {
             // cash.
             if (!accountNumber.equalsIgnoreCase("cash")) {
                 BankAccount.updatesBalance(username, accountNumber, amount);
-                
-                // Persists the transaction
-                Util.persistEntity(transaction);
-                return transaction.getKey().getId();
             }
+
+            // Persists the transaction
+            Util.persistEntity(transaction);
+            return transaction.getKey().getId();
         }
         return 0;
     }
