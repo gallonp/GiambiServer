@@ -32,10 +32,23 @@ public class Transaction {
             for (String property : properties) {
                 transaction.setProperty(property, map.get(property));
             }
-            Util.persistEntity(transaction);
-            return transaction.getKey().getId();
+
+            // Gets information for updating bank account balance.
+            String username = map.get("username");
+            String accountNumber = map.get("accountNumber");
+            String amount = map.get("amount");
+
+            // Updates bank account if the transaction is not completed with
+            // cash.
+            if (!accountNumber.equalsIgnoreCase("cash")) {
+                BankAccount.updatesBalance(username, accountNumber, amount);
+                
+                // Persists the transaction
+                Util.persistEntity(transaction);
+                return transaction.getKey().getId();
+            }
         }
-        return Long.MAX_VALUE;
+        return 0;
     }
 
     /**
@@ -51,22 +64,27 @@ public class Transaction {
     /**
      * Return all transactions for a particular username
      * 
-     * @param String username
+     * @param String
+     *            username
      * @return List<Entity> transactions
      */
-    public static Iterable<Entity> getAllUserTransactions(String username){
+    public static Iterable<Entity> getAllUserTransactions(String username) {
         return Util.listEntities("Transaction", "username", username);
     }
-    
+
     /**
      * Return all transactions for a particular account under a user
-     * @param String account
+     * 
+     * @param String
+     *            account
      * @return List<Entity> transactions
      */
-    public static Iterable<Entity> getAccountTransactions(String username, String accountNumber){
-        return Util.listEntitiesFilters("Transaction", "username", username, "accountNumber", accountNumber);
+    public static Iterable<Entity> getAccountTransactions(String username,
+            String accountNumber) {
+        return Util.listEntitiesFilters("Transaction", "username", username,
+                "accountNumber", accountNumber);
     }
-    
+
     /**
      * Get transaction entity
      * 

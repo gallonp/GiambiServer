@@ -57,7 +57,8 @@ public class TransactionServlet extends HttpServlet {
                 out.print(json);
             }
 
-        } else if (accountNumber != null && username != null && !accountNumber.isEmpty()) {
+        } else if (accountNumber != null && username != null
+                && !accountNumber.isEmpty()) {
             if (SessionCookie.verifySessionCookie(req, username)) {
                 Iterable<Entity> entities = Transaction
                         .getAllUserTransactions(accountNumber);
@@ -94,8 +95,8 @@ public class TransactionServlet extends HttpServlet {
         JSONObject json = (JSONObject) JSONValue.parse(decodedContent);
         String transactionName = (String) json.get("transactionName");
         String username = (String) json.get("username");
-        if (transactionName == null || username == null || transactionName.isEmpty()
-                || username.isEmpty()) {
+        if (transactionName == null || username == null
+                || transactionName.isEmpty() || username.isEmpty()) {
             out.print("Invalid request: missing credential");
             logger.log(Level.WARNING, "Missing Credentials in Transaction");
             return;
@@ -132,25 +133,33 @@ public class TransactionServlet extends HttpServlet {
         map.put("merchant", merchant);
         map.put("amount", amount);
         map.put("accountNumber", accountNumber);
-        long transactionId = Long.MAX_VALUE;
-        if (id != null && !id.isEmpty()){
-            try{
-            transactionId = Long.parseLong(id);
-            map.remove("createDate");
-            } catch (NumberFormatException e){
-                logger.log(Level.WARNING, "Invalid transaction id: Parse id error.");
+        long transactionId = 0;
+        if (id != null && !id.isEmpty()) {
+            try {
+                transactionId = Long.parseLong(id);
+                map.remove("createDate");
+            } catch (NumberFormatException e) {
+                out.print("Invalid request: invalid id, Parse transaction id error.");
+                logger.log(Level.WARNING,
+                        "Invalid transaction id: Parse transaction id error.");
+                return;
             }
         }
-        transactionId = Transaction.createOrUpdateTransaction(
-                transactionId, map);
         
-        if (transactionId != Long.MAX_VALUE) {
+        try {
+            transactionId = Transaction.createOrUpdateTransaction(
+                    transactionId, map);
+        } catch (IllegalArgumentException e) {
+            out.print("Invalid request: invalid bank account, transaction NOT saved.");
+        }
+        
+        if (transactionId != 0) {
             logger.log(Level.INFO, "transaction saved." + " id: "
                     + transactionId);
             out.print(transactionId);
         } else {
-            logger.log(Level.WARNING, "Transaction save failed.");
-            out.print("Transaction save failed.");
+            logger.log(Level.WARNING, "Transaction save FAILED.");
+            out.print("Invalid request: NO parameters, Transaction save FAILED.");
         }
     }
 }
