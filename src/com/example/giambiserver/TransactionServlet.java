@@ -69,13 +69,13 @@ public class TransactionServlet extends HttpServlet {
                 out.print("Invalid request: Timed out");
             }
         } else if (username != null) {
-            if (SessionCookie.verifySessionCookie(req, username)) {
+           // if (SessionCookie.verifySessionCookie(req, username)) {
                 Iterable<Entity> entities = Transaction
                         .getAllUserTransactions(username);
                 out.print(Util.writeJSON(entities));
-            } else {
-                out.print("Invalid request: Timed out");
-            }
+            //} else {
+            //    out.print("Invalid request: Timed out");
+            //}
         } else {
             out.print("Invalid request: No valid parameters");
         }
@@ -103,13 +103,13 @@ public class TransactionServlet extends HttpServlet {
             logger.log(Level.WARNING, "Missing Credentials in Transaction");
             return;
         }
-
+        /*
         // Checks for session cookie
         if (!SessionCookie.verifySessionCookie(req, username)) {
             out.print("Invalid request: Timed out");
             return;
         }
-
+    */
         Date updateDate = new Date();
         String amount = ((Double) json.get("amount")).toString();
         String category = (String) json.get("category");
@@ -150,9 +150,11 @@ public class TransactionServlet extends HttpServlet {
         }
         
         try {
+            logger.log(Level.INFO, "Creating transaction");
             transactionId = Transaction.createOrUpdateTransaction(
                     transactionId, map);
         } catch (IllegalArgumentException e) {
+            logger.log(Level.WARNING, "Invalid bank account");
             out.print("Invalid request: invalid bank account, transaction NOT saved.");
             return;
         }

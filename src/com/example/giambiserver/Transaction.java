@@ -21,7 +21,7 @@ public class Transaction {
      * @return true if a transaction is changed or created, false otherwise.
      */
     public static long createOrUpdateTransaction(long id,
-            Map<String, String> map) {
+            Map<String, String> map) throws IllegalArgumentException{
         Entity transaction = getTransaction(id);
         if (transaction == null) {
             transaction = new Entity("Transaction");
