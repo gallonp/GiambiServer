@@ -33,11 +33,17 @@ public class SessionCookie {
 
     public static boolean verifySessionCookie(HttpServletRequest req,
             String username) {
-        String cookieValue = req.getParameter("Cookie");
-        logger.log(Level.INFO, "Verifying cookie: " + cookieValue);
-        Cookie cookie = new Cookie("auth-cookie", cookieValue);
-        cookie.setMaxAge(120);
-        return verifySessionCookie(username, cookie);
+    	Cookie[] cookies = req.getCookies();
+        for (Cookie cookie :cookies){
+            Cookie cke = new Cookie("auth-cookie", cookie.getName()+"="+cookie.getValue());
+            cke.setMaxAge(6400);
+            if (verifySessionCookie(username,cke)){
+                logger.log(Level.INFO, "Checked session cookie succeeded!");
+            	return true;
+            }
+        }
+        logger.log(Level.INFO, "Checked session cookie failed!");
+        return false;
     }
 
     private static boolean verifySessionCookie(String username, Cookie cookie) {
