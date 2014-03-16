@@ -32,6 +32,7 @@ public class TransactionServlet extends HttpServlet {
         String id = req.getParameter("id");
         String username = req.getParameter("username");
         String accountNumber = req.getParameter("accountNumber");
+        logger.log(Level.INFO, "id: " + id + " username: "+ username + accountNumber);
         if (id != null) {
             if (id.isEmpty()) {
                 out.print("Invalid request: id is empty");
@@ -103,13 +104,13 @@ public class TransactionServlet extends HttpServlet {
             logger.log(Level.WARNING, "Missing Credentials in Transaction");
             return;
         }
-        /*
+        
         // Checks for session cookie
         if (!SessionCookie.verifySessionCookie(req, username)) {
             out.print("Invalid request: Timed out");
             return;
         }
-    */
+
         Date updateDate = new Date();
         String amount = ((Double) json.get("amount")).toString();
         String category = (String) json.get("category");

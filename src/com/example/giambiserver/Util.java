@@ -54,7 +54,7 @@ public class Util {
  * @param entity  : entity to be persisted
  */
   public static void persistEntity(Entity entity) {
-  	logger.log(Level.INFO, "Saving entity");
+  	//logger.log(Level.INFO, "Saving entity");
   	datastore.put(entity);  	
   }
 
@@ -63,7 +63,7 @@ public class Util {
 	 * @param key : key to delete the entity from the persistent store
 	 */
   public static void deleteEntity(Key key) {
-    logger.log(Level.INFO, "Deleting entity");
+    //logger.log(Level.INFO, "Deleting entity");
     datastore.delete(key);  	
   }
   
@@ -86,7 +86,7 @@ public class Util {
 	 */
  
   public static Entity findEntity(Key key) {
-  	logger.log(Level.INFO, "Search the entity");
+  	//logger.log(Level.INFO, "Search the entity");
   	try {	  
   	  return datastore.get(key);
   	} catch (EntityNotFoundException e) {
@@ -126,7 +126,7 @@ public class Util {
    */
 public static Iterable<Entity> listEntitiesFilters(String kind, String searchBy,
                   String searchFor, String... filters) {
-  logger.log(Level.INFO, "Search entities based on search criteria: " + searchBy + " = " + searchFor + " and other filters");
+  //logger.log(Level.INFO, "Search entities based on search criteria: " + searchBy + " = " + searchFor + " and other filters");
   Query q = new Query(kind);
   if (searchFor != null && !"".equals(searchFor)) {
     q.addFilter(searchBy, FilterOperator.EQUAL, searchFor);
@@ -149,7 +149,7 @@ public static Iterable<Entity> listEntitiesFilters(String kind, String searchBy,
    * @return
    */
   public static Iterable<Entity> listChildren(String kind, Key ancestor) {
-  	logger.log(Level.INFO, "Search entities based on parent");
+  	//logger.log(Level.INFO, "Search entities based on parent");
   	Query q = new Query(kind);
   	q.setAncestor(ancestor);
   	q.addFilter(Entity.KEY_RESERVED_PROPERTY, FilterOperator.GREATER_THAN, ancestor);

@@ -57,8 +57,8 @@ public class BankAccount {
             String amount) {
         List<Entity> bankAccounts = BankAccount.getBankAccountList(username);
         for (Entity bankAccount : bankAccounts) {
-            if (((String) bankAccount.getProperty("bankAccountNumber"))
-                    .equalsIgnoreCase(accountNumber)) {
+            if (((String) bankAccount.getProperty("bankAccountNumber")).trim()
+                    .equalsIgnoreCase(accountNumber.trim())) {
                 Double balance = Double.parseDouble((String) bankAccount
                         .getProperty("balance"));
                 balance = balance - Double.parseDouble(amount);
