@@ -54,7 +54,7 @@ public class BankAccount {
      * @return none.
      */
     public static void updatesBalance(String username, String accountNumber,
-            String amount) {
+            String amount) throws IllegalBankAccountException {
         List<Entity> bankAccounts = BankAccount.getBankAccountList(username);
         for (Entity bankAccount : bankAccounts) {
             if (((String) bankAccount.getProperty("bankAccountNumber")).trim()
@@ -69,7 +69,7 @@ public class BankAccount {
         }
         logger.log(Level.WARNING, "Bank account: " + accountNumber
                 + " not found. Balance NOT updated.");
-        throw new IllegalArgumentException("illegal Bank account: " + accountNumber
+        throw new IllegalBankAccountException("illegal Bank account: " + accountNumber
                 + " not found. Balance NOT updated.");
     }
 

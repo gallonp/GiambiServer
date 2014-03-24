@@ -38,7 +38,7 @@ public class TransactionServlet extends HttpServlet {
                 out.print("Invalid request: id is empty");
                 logger.log(Level.WARNING, "Invalid request: id is empty");
             }
-            long idLong = 0;
+            long idLong = -1;
             try {
                 idLong = Long.parseLong(id);
             } catch (NumberFormatException e) {
@@ -137,7 +137,7 @@ public class TransactionServlet extends HttpServlet {
         map.put("merchant", merchant);
         map.put("amount", amount);
         map.put("accountNumber", accountNumber);
-        long transactionId = 0;
+        long transactionId = -1;
         if (id != null && !id.isEmpty()) {
             try {
                 transactionId = Long.parseLong(id);
@@ -154,13 +154,14 @@ public class TransactionServlet extends HttpServlet {
             logger.log(Level.INFO, "Creating transaction");
             transactionId = Transaction.createOrUpdateTransaction(
                     transactionId, map);
-        } catch (IllegalArgumentException e) {
+            logger.log(Level.INFO, transactionId + "");
+        } catch (IllegalBankAccountException e) {
             logger.log(Level.WARNING, "Invalid bank account");
             out.print("Invalid request: invalid bank account, transaction NOT saved.");
             return;
         }
         
-        if (transactionId != 0) {
+        if (transactionId != -1) {
             logger.log(Level.INFO, "transaction saved." + " id: "
                     + transactionId);
             out.print(transactionId);

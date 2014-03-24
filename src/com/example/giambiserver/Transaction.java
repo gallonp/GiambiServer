@@ -2,6 +2,8 @@ package com.example.giambiserver;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
@@ -12,7 +14,8 @@ import com.google.appengine.api.datastore.KeyFactory;
  * 
  */
 public class Transaction {
-
+    private static final Logger logger = Logger
+            .getLogger(Transaction.class.getCanonicalName());
     /**
      * Creates or updates a transaction.
      * 
@@ -21,11 +24,12 @@ public class Transaction {
      * @return true if a transaction is changed or created, false otherwise.
      */
     public static long createOrUpdateTransaction(long id,
-            Map<String, String> map) throws IllegalArgumentException{
+            Map<String, String> map) throws IllegalBankAccountException{
         Entity transaction = getTransaction(id);
         if (transaction == null) {
             transaction = new Entity("Transaction");
         }
+        logger.log(Level.INFO,transaction.getKey().toString());
 
         if (map != null) {
             Set<String> properties = map.keySet();
