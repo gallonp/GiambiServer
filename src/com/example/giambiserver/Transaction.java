@@ -19,7 +19,7 @@ public class Transaction {
     /**
      * Creates or updates a transaction.
      * 
-     * @param key
+     * @param id
      * @param map
      * @return true if a transaction is changed or created, false otherwise.
      */
@@ -58,7 +58,6 @@ public class Transaction {
     /**
      * Return all the Transactions
      * 
-     * @param kind
      * @return transactions
      */
     public static Iterable<Entity> getAllTransactions() {
@@ -68,8 +67,6 @@ public class Transaction {
     /**
      * Return all transactions for a particular username
      * 
-     * @param String
-     *            username
      * @return List<Entity> transactions
      */
     public static Iterable<Entity> getAllUserTransactions(String username) {
@@ -78,9 +75,7 @@ public class Transaction {
 
     /**
      * Return all transactions for a particular account under a user
-     * 
-     * @param String
-     *            account
+     *
      * @return List<Entity> transactions
      */
     public static Iterable<Entity> getAccountTransactions(String username,
@@ -103,9 +98,7 @@ public class Transaction {
 
     /**
      * Delete product entity
-     * 
-     * @param productKey
-     *            : product to be deleted
+     *
      * @return status string
      */
     public static String deleteProduct(long id) {
