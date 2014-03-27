@@ -47,9 +47,9 @@ public class BankAccount {
      * Updates balance of a bank account based on the username's account number
      * and amount. Added by Haoli.
      * 
-     * @param String username
-     * @param String accountNumber
-     * @param String amount
+     * @param username
+     * @param accountNumber
+     * @param amount
      * @throws IllegalArgumentException if the account number is not valid
      * @return none.
      */

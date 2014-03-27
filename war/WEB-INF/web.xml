@@ -28,6 +28,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>TransactionServer</servlet-name>
 		<servlet-class>com.example.giambiserver.TransactionServlet</servlet-class>
 	</servlet>
+    <servlet>
+        <servlet-name>ReportServer</servlet-name>
+        <servlet-class>com.example.giambiserver.SpendingCategoryReportServlet</servlet-class>
+    </servlet>
 	<servlet-mapping>
 		<servlet-name>GiambiServer</servlet-name>
 		<url-pattern>/giambiserver</url-pattern>
@@ -52,6 +56,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>TransactionServer</servlet-name>
 		<url-pattern>/transactions</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportServer</servlet-name>
+        <url-pattern>/getreport</url-pattern>
+    </servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

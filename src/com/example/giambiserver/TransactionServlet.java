@@ -62,13 +62,13 @@ public class TransactionServlet extends HttpServlet {
 
         } else if (accountNumber != null && username != null
                 && !accountNumber.isEmpty()) {
-            if (SessionCookie.verifySessionCookie(req, username)) {
+           // if (SessionCookie.verifySessionCookie(req, username)) {
                 Iterable<Entity> entities = Transaction
                         .getAccountTransactions(username, accountNumber);
                 out.print(Util.writeJSON(entities));
-            } else {
-                out.print("Invalid request: Timed out");
-            }
+//            } else {
+//                out.print("Invalid request: Timed out");
+//            }
         } else if (username != null) {
            // if (SessionCookie.verifySessionCookie(req, username)) {
                 Iterable<Entity> entities = Transaction
@@ -106,10 +106,10 @@ public class TransactionServlet extends HttpServlet {
         }
         
         // Checks for session cookie
-        if (!SessionCookie.verifySessionCookie(req, username)) {
-            out.print("Invalid request: Timed out");
-            return;
-        }
+//        if (!SessionCookie.verifySessionCookie(req, username)) {
+//            out.print("Invalid request: Timed out");
+//            return;
+//        }
 
         Date updateDate = new Date();
         String amount = ((Double) json.get("amount")).toString();
@@ -157,6 +157,7 @@ public class TransactionServlet extends HttpServlet {
             logger.log(Level.INFO, transactionId + "");
         } catch (IllegalBankAccountException e) {
             logger.log(Level.WARNING, "Invalid bank account");
+            logger.log(Level.WARNING, e.getMessage());
             out.print("Invalid request: invalid bank account, transaction NOT saved.");
             return;
         }
