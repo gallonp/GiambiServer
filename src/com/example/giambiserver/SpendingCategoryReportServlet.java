@@ -35,6 +35,7 @@ public class SpendingCategoryReportServlet extends HttpServlet {
         PrintWriter respWriter = resp.getWriter();
         String userAccount = (String) job.get("userAccount");
         logger.log(Level.INFO,userAccount);
+//        List<Entity> transList = Transaction.getTransactionList(userAccount);
         List<Entity> transList = Transaction.getTransactionList(userAccount);
         int listLength = transList.size();
         TreeSet<String> transCategories = new TreeSet<>();

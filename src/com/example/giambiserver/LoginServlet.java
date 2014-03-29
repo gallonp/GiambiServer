@@ -3,7 +3,6 @@ package com.example.giambiserver;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Calendar;
-import java.util.logging.Level;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;

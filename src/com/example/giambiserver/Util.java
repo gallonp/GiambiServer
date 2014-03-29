@@ -118,9 +118,7 @@ public class Util {
    *            : Searching Criteria (Property)
    * @param searchFor
    *            : Searching Value (Property Value)
-   * @param optional additional searchBy
-   * @param optional additional searchFor
-   * @param ...
+   * @param filters additional searchBy
    * @return List all entities of a kind from the cache or datastore (if not
    *         in cache) with the specified properties
    */
@@ -259,9 +257,8 @@ public static Iterable<Entity> listEntitiesFilters(String kind, String searchBy,
   
 	/**
 	 * Utility method to send the error back to UI
-	 * @param data
-	 * @param resp
-	 * @throws IOException 
+	 * @param ex
+	 * @throws IOException
 	 */
   public static String getErrorMessage(Exception ex) throws IOException{
     return "Error:"+ex.toString();

@@ -37,8 +37,7 @@ public class UserAccount {
 	/**
 	 * get Item with item name
 	 * 
-	 * @param itemName
-	 *            : get itemName
+	 * @param username
 	 * @return item entity
 	 */
 	public static Entity getSingleUser(String username) {

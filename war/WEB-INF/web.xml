@@ -5,10 +5,6 @@
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	<servlet>
-		<servlet-name>GiambiServer</servlet-name>
-		<servlet-class>com.example.giambiserver.GiambiServerServlet</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>RegisterServer</servlet-name>
 		<servlet-class>com.example.giambiserver.RegisterServlet</servlet-class>
 	</servlet>
@@ -32,10 +28,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         <servlet-name>ReportServer</servlet-name>
         <servlet-class>com.example.giambiserver.SpendingCategoryReportServlet</servlet-class>
     </servlet>
-	<servlet-mapping>
-		<servlet-name>GiambiServer</servlet-name>
-		<url-pattern>/giambiserver</url-pattern>
-	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>RegisterServer</servlet-name>
 		<url-pattern>/register</url-pattern>

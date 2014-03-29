@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +22,6 @@ import com.google.appengine.api.datastore.Entity;
 public class GetAccountServlet extends HttpServlet {
 
     private static final long serialVersionUID = 6083636932921870764L;
-    private static final String[] FIELDS = {"bankAccountName", "bankAccountNumber",
-                                            "userAccount", "bankName", "balance"};
 
     /**
      * Constructor.

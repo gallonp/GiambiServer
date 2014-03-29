@@ -1,7 +1,6 @@
 package com.example.giambiserver;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,11 +65,25 @@ public class Transaction {
 
     /**
      * Return all transactions for a particular username
+     * @param username
+     * @return iterable transactions
+     */
+    public static Iterable<Entity> getAllTransactions(String username) {
+        return Util.listEntities("Transaction", "username", username);
+    }
+
+    /**
+     * Return all transactions for a particular username
      * 
      * @return List<Entity> transactions
      */
-    public static Iterable<Entity> getAllUserTransactions(String username) {
-        return Util.listEntities("Transaction", "username", username);
+    public static List<Entity> getTransactionList(String username) {
+        Iterator<Entity> itr = Util.listEntities("Transaction", "username", username).iterator();
+        List<Entity> list = new LinkedList<>();
+        while (itr.hasNext()) {
+            list.add(itr.next());
+        }
+        return list;
     }
 
     /**
