@@ -78,7 +78,7 @@ public class Util {
     /**
      * Delete list of entities given their keys.
      * 
-     * @param keys
+     * @param keys 
      */
     public static void deleteEntity(final List<Key> keys) {
         datastore.delete(new Iterable<Key>() {
@@ -109,8 +109,8 @@ public class Util {
     /***
      * Search entities based on search criteria.
      * 
-     * @param kind
-     * @param searchBy
+     * @param kind 
+     * @param searchBy 
      *            : Searching Criteria (Property)
      * @param searchFor
      *            : Searching Value (Property Value)
@@ -125,8 +125,8 @@ public class Util {
     /***
      * Search entities based on search criteria, may have multiple filters.
      * 
-     * @param kind
-     * @param searchBy
+     * @param kind 
+     * @param searchBy 
      *            : Searching Criteria (Property)
      * @param searchFor
      *            : Searching Value (Property Value)
@@ -174,10 +174,11 @@ public class Util {
 
     /**
      * 
-     * @param kind
-     * @param ancestor
-     * @return
+     * @param kind 
+     * @param ancestor 
+     * @return Iterable<Entity> 
      */
+    @SuppressWarnings("deprecation")
     public static Iterable<Entity> listChildKeys(String kind, Key ancestor) {
         LOGGER.log(Level.INFO, "Search entities based on parent");
         Query q = new Query(kind);
@@ -189,10 +190,11 @@ public class Util {
     }
 
     /**
-     * List the entities in JSON format
+     * List the entities in JSON format.
      * 
      * @param entities
      *            entities to return as JSON strings
+     * @return String 
      */
     public static String writeJSON(Iterable<Entity> entities) {
         LOGGER.log(Level.INFO, "creating JSON format object");
@@ -222,6 +224,11 @@ public class Util {
         return sb.toString();
     }
 
+    /**
+     * 
+     * @param entity 
+     * @return String 
+     */
     public static String writeJSON(Entity entity) {
         List<Entity> entities = new ArrayList<>();
         entities.add(entity);
@@ -229,7 +236,7 @@ public class Util {
     }
 
     /**
-     * Retrieves Parent and Child entities into JSON String
+     * Retrieves Parent and Child entities into JSON String.
      * 
      * @param entities
      *            : List of parent entities
@@ -276,7 +283,7 @@ public class Util {
     }
 
     /**
-     * Utility method to send the error back to UI
+     * Utility method to send the error back to UI.
      * 
      * @param ex
      * @throws IOException
@@ -286,7 +293,7 @@ public class Util {
     }
 
     /**
-     * get DatastoreService instance
+     * get DatastoreService instance.
      * 
      * @return DatastoreService instance
      */
@@ -294,6 +301,11 @@ public class Util {
         return datastore;
     }
 
+    /**
+     * HttpContentReader.
+     * @param input 
+     * @return String
+     */
     public static String HttpContentReader(InputStream input) {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(input));
@@ -316,6 +328,12 @@ public class Util {
         return response.toString();
     }
 
+    /**
+     * 
+     * @param request 
+     * @return String 
+     * @throws IOException 
+     */
     public static String getBody(HttpServletRequest request) throws IOException {
 
         String body = null;
