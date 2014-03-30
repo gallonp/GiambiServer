@@ -117,7 +117,7 @@ public class TransactionServlet extends HttpServlet {
         String createDate = (String) json.get("createDate");
         String merchant = (String) json.get("merchant");
         String accountNumber = (String) json.get("accountNumber");
-        String id = (String) json.get("id");
+        long id = (long) json.get("id");
         if (amount == null || amount.isEmpty()) {
             amount = "0";
         }
@@ -138,9 +138,9 @@ public class TransactionServlet extends HttpServlet {
         map.put("amount", amount);
         map.put("accountNumber", accountNumber);
         long transactionId = -1;
-        if (id != null && !id.isEmpty()) {
+        if (id != 0) {
             try {
-                transactionId = Long.parseLong(id);
+                transactionId = id;
                 map.remove("createDate");
             } catch (NumberFormatException e) {
                 out.print("Invalid request: invalid id, Parse transaction id error.");
