@@ -18,42 +18,90 @@ import org.json.simple.JSONValue;
 
 import com.google.appengine.api.datastore.Entity;
 
+/**
+ * 
+ * @author haolidu
+ *
+ */
 @SuppressWarnings("serial")
 public class TransactionServlet extends HttpServlet {
-    private static final Logger logger = Logger
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger
             .getLogger(TransactionServlet.class.getCanonicalName());
-
+    /**
+     * 
+     */
+    private static final String ID_STRING = "id";
+    /**
+     * 
+     */
+    private static final String TEXT_STRING = "text/plain";
+    /**
+     * 
+     */
+    private static final String USERNAME_STRING = "username";
+    /**
+     * 
+     */
+    private static final String ACCOUNTNUMBER_STRING = "accountNumber";
+    /**
+     * 
+     */
+    private static final String MERCHANT_STRING = "merchant";
+    /**
+     * 
+     */
+    private static final String AMOUNT_STRING = "amount";
+    /**
+     * 
+     */
+    private static final String TRNASCATIONNAME_STRING = "transactionName";
+    /**
+     * 
+     */
+    private static final String CATEGORY_STRING = "category";
+    /**
+     * 
+     */
+    private static final String CREATEDATE_STRING = "createDate";
+    /**
+     * 
+     */
+    private static final String ID_IS_EMPTY = "Invalid request: id is empty";
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        resp.setContentType("text/plain");
+        throws IOException {
+        resp.setContentType(TEXT_STRING);
         PrintWriter out = resp.getWriter();
 
-        String id = req.getParameter("id");
-        String username = req.getParameter("username");
-        String accountNumber = req.getParameter("accountNumber");
-        logger.log(Level.INFO, "id: " + id + " username: "+ username + accountNumber);
+        String id = req.getParameter(ID_STRING);
+        String username = req.getParameter(USERNAME_STRING);
+        String accountNumber = req.getParameter(ACCOUNTNUMBER_STRING);
+        LOGGER.log(Level.INFO, "id: " + id + " username: " + username
+                + accountNumber);
         if (id != null) {
             if (id.isEmpty()) {
-                out.print("Invalid request: id is empty");
-                logger.log(Level.WARNING, "Invalid request: id is empty");
+                out.print(ID_IS_EMPTY);
+                LOGGER.log(Level.WARNING, ID_IS_EMPTY);
             }
             long idLong = -1;
             try {
                 idLong = Long.parseLong(id);
             } catch (NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid request: id is not a number");
+                LOGGER.log(Level.WARNING, "Invalid request: id is not a number");
                 return;
             }
             Entity transaction = Transaction.getTransaction(idLong);
             if (transaction == null) {
-                logger.log(Level.WARNING, "Invalid request: Transaction id: "
+                LOGGER.log(Level.WARNING, "Invalid request: Transaction id: "
                         + idLong + " can not be found.");
                 out.print("Invalid request: Transaction id: " + idLong
                         + " can not be found.");
                 return;
             } else {
-                logger.log(Level.INFO,
+                LOGGER.log(Level.INFO,
                         "Transaction query success. Transaction id: " + idLong
                                 + " returned.");
                 String json = Util.writeJSON(transaction);
@@ -62,21 +110,21 @@ public class TransactionServlet extends HttpServlet {
 
         } else if (accountNumber != null && username != null
                 && !accountNumber.isEmpty()) {
-           // if (SessionCookie.verifySessionCookie(req, username)) {
-                Iterable<Entity> entities = Transaction
-                        .getAccountTransactions(username, accountNumber);
-                out.print(Util.writeJSON(entities));
-//            } else {
-//                out.print("Invalid request: Timed out");
-//            }
+            // if (SessionCookie.verifySessionCookie(req, username)) {
+            Iterable<Entity> entities = Transaction.getAccountTransactions(
+                    username, accountNumber);
+            out.print(Util.writeJSON(entities));
+            // } else {
+            // out.print("Invalid request: Timed out");
+            // }
         } else if (username != null) {
-           // if (SessionCookie.verifySessionCookie(req, username)) {
-                Iterable<Entity> entities = Transaction.getAllTransactions
-                        (username);
-                out.print(Util.writeJSON(entities));
-            //} else {
-            //    out.print("Invalid request: Timed out");
-            //}
+            // if (SessionCookie.verifySessionCookie(req, username)) {
+            Iterable<Entity> entities = Transaction
+                    .getAllTransactions(username);
+            out.print(Util.writeJSON(entities));
+            // } else {
+            // out.print("Invalid request: Timed out");
+            // }
         } else {
             out.print("Invalid request: No valid parameters");
         }
@@ -84,8 +132,8 @@ public class TransactionServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        resp.setContentType("text/plain");
+        throws IOException {
+        resp.setContentType(TEXT_STRING);
         PrintWriter out = resp.getWriter();
 
         String data = req.getParameter("json");
@@ -96,28 +144,28 @@ public class TransactionServlet extends HttpServlet {
             throw new IOException("Data illegal");
         }
         JSONObject json = (JSONObject) JSONValue.parse(decodedContent);
-        String transactionName = (String) json.get("transactionName");
-        String username = (String) json.get("username");
+        String transactionName = (String) json.get(TRNASCATIONNAME_STRING);
+        String username = (String) json.get(USERNAME_STRING);
         if (transactionName == null || username == null
                 || transactionName.isEmpty() || username.isEmpty()) {
             out.print("Invalid request: missing credential");
-            logger.log(Level.WARNING, "Missing Credentials in Transaction");
+            LOGGER.log(Level.WARNING, "Missing Credentials in Transaction");
             return;
         }
-        
+
         // Checks for session cookie
-//        if (!SessionCookie.verifySessionCookie(req, username)) {
-//            out.print("Invalid request: Timed out");
-//            return;
-//        }
+        // if (!SessionCookie.verifySessionCookie(req, username)) {
+        // out.print("Invalid request: Timed out");
+        // return;
+        // }
 
         Date updateDate = new Date();
-        String amount = ((Double) json.get("amount")).toString();
-        String category = (String) json.get("category");
-        String createDate = (String) json.get("createDate");
-        String merchant = (String) json.get("merchant");
-        String accountNumber = (String) json.get("accountNumber");
-        long id = (long) json.get("id");
+        String amount = ((Double) json.get(AMOUNT_STRING)).toString();
+        String category = (String) json.get(CATEGORY_STRING);
+        String createDate = (String) json.get(CREATEDATE_STRING);
+        String merchant = (String) json.get(MERCHANT_STRING);
+        String accountNumber = (String) json.get(ACCOUNTNUMBER_STRING);
+        long id = (long) json.get(ID_STRING);
         if (amount == null || amount.isEmpty()) {
             amount = "0";
         }
@@ -129,45 +177,44 @@ public class TransactionServlet extends HttpServlet {
         }
 
         Map<String, String> map = new HashMap<>();
-        map.put("username", username);
-        map.put("transactionName", transactionName);
+        map.put(USERNAME_STRING, username);
+        map.put(TRNASCATIONNAME_STRING, transactionName);
         map.put("updateDate", updateDate.toString());
-        map.put("createDate", createDate);
-        map.put("category", category);
-        map.put("merchant", merchant);
-        map.put("amount", amount);
-        map.put("accountNumber", accountNumber);
+        map.put(CREATEDATE_STRING, createDate);
+        map.put(CATEGORY_STRING, category);
+        map.put(MERCHANT_STRING, merchant);
+        map.put(AMOUNT_STRING, amount);
+        map.put(ACCOUNTNUMBER_STRING, accountNumber);
         long transactionId = -1;
         if (id != 0) {
             try {
                 transactionId = id;
-                map.remove("createDate");
+                map.remove(CREATEDATE_STRING);
             } catch (NumberFormatException e) {
                 out.print("Invalid request: invalid id, Parse transaction id error.");
-                logger.log(Level.WARNING,
+                LOGGER.log(Level.WARNING,
                         "Invalid transaction id: Parse transaction id error.");
                 return;
             }
         }
-        
         try {
-            logger.log(Level.INFO, "Creating transaction");
+            LOGGER.log(Level.INFO, "Creating transaction");
             transactionId = Transaction.createOrUpdateTransaction(
                     transactionId, map);
-            logger.log(Level.INFO, transactionId + "");
+            LOGGER.log(Level.INFO, transactionId + "");
         } catch (IllegalBankAccountException e) {
-            logger.log(Level.WARNING, "Invalid bank account");
-            logger.log(Level.WARNING, e.getMessage());
+            LOGGER.log(Level.WARNING, "Invalid bank account");
+            LOGGER.log(Level.WARNING, e.getMessage());
             out.print("Invalid request: invalid bank account, transaction NOT saved.");
             return;
         }
-        
+
         if (transactionId != -1) {
-            logger.log(Level.INFO, "transaction saved." + " id: "
+            LOGGER.log(Level.INFO, "transaction saved." + " id: "
                     + transactionId);
             out.print(transactionId);
         } else {
-            logger.log(Level.WARNING, "Transaction save FAILED.");
+            LOGGER.log(Level.WARNING, "Transaction save FAILED.");
             out.print("Invalid request: NO parameters, Transaction save FAILED.");
         }
     }
