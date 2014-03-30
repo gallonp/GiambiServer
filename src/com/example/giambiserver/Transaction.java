@@ -22,20 +22,32 @@ public class Transaction {
      */
     private static final Logger LOGGER = Logger.getLogger(Transaction.class
             .getCanonicalName());
-
+    /**
+     * 
+     */
+    private static final String TRANSACTION_STRING = "Transaction";
+    /**
+     * 
+     */
+    private static final String USERNAME_STRING = "username";
+    /**
+     * 
+     */
+    private static final String ACCOUNTNUMBER_STRING = "accountNumber";
+    
     /**
      * Creates or updates a transaction.
      * 
      * @param id 
      * @param map 
      * @return true if a transaction is changed or created, false otherwise.
-     * @throws IllegalBankAccountException
+     * @throws IllegalBankAccountException 
      */
     public static long createOrUpdateTransaction(long id,
             Map<String, String> map) throws IllegalBankAccountException {
         Entity transaction = getTransaction(id);
         if (transaction == null) {
-            transaction = new Entity("Transaction");
+            transaction = new Entity(TRANSACTION_STRING);
         }
         LOGGER.log(Level.INFO, transaction.getKey().toString());
 
@@ -46,8 +58,8 @@ public class Transaction {
             }
 
             // Gets information for updating bank account balance.
-            String username = map.get("username");
-            String accountNumber = map.get("accountNumber");
+            String username = map.get(USERNAME_STRING);
+            String accountNumber = map.get(ACCOUNTNUMBER_STRING);
             String amount = map.get("amount");
 
             // Updates bank account if the transaction is not completed with
@@ -69,7 +81,7 @@ public class Transaction {
      * @return transactions
      */
     public static Iterable<Entity> getAllTransactions() {
-        return Util.listEntities("Transaction", null, null);
+        return Util.listEntities(TRANSACTION_STRING, null, null);
     }
 
     /**
@@ -79,7 +91,7 @@ public class Transaction {
      * @param username 
      */
     public static Iterable<Entity> getAllTransactions(String username) {
-        return Util.listEntities("Transaction", "username", username);
+        return Util.listEntities(TRANSACTION_STRING, USERNAME_STRING, username);
     }
 
     /**
@@ -89,7 +101,7 @@ public class Transaction {
      * @param username 
      */
     public static List<Entity> getTransactionList(String username) {
-        Iterator<Entity> itr = Util.listEntities("Transaction", "username",
+        Iterator<Entity> itr = Util.listEntities(TRANSACTION_STRING, USERNAME_STRING,
                 username).iterator();
         List<Entity> list = new LinkedList<>();
         while (itr.hasNext()) {
@@ -102,13 +114,13 @@ public class Transaction {
      * Return all transactions for a particular account under a user.
      * 
      * @return List<Entity> transactions
-     * @param accountNumber
      * @param username 
+     * @param accountNumber 
      */
     public static Iterable<Entity> getAccountTransactions(String username,
             String accountNumber) {
-        return Util.listEntitiesFilters("Transaction", "username", username,
-                "accountNumber", accountNumber);
+        return Util.listEntitiesFilters(TRANSACTION_STRING, USERNAME_STRING, username,
+                ACCOUNTNUMBER_STRING, accountNumber);
     }
 
     /**
@@ -119,7 +131,7 @@ public class Transaction {
      * @return Transaction entity
      */
     public static Entity getTransaction(long id) {
-        Key key = KeyFactory.createKey("Transaction", id);
+        Key key = KeyFactory.createKey(TRANSACTION_STRING, id);
         return Util.findEntity(key);
     }
 
@@ -130,7 +142,7 @@ public class Transaction {
      * @param id 
      */
     public static String deleteTransaction(long id) {
-        Key key = KeyFactory.createKey("Transaction", id);
+        Key key = KeyFactory.createKey(TRANSACTION_STRING, id);
         Util.deleteEntity(key);
         return "Transaction deleted successfully";
     }
