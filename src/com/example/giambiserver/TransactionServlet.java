@@ -255,6 +255,7 @@ public class TransactionServlet extends HttpServlet {
             return;
         }
         LOGGER.log(Level.INFO, Transaction.deleteTransaction(id));
+        out.print("Success");
     }
 
 }
