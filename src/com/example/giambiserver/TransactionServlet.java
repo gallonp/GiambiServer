@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -224,4 +225,36 @@ public class TransactionServlet extends HttpServlet {
             out.print("Invalid request: NO parameters, Transaction save FAILED.");
         }
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        super.doDelete(req, resp);
+        resp.setContentType(TEXT_STRING);
+        PrintWriter out = resp.getWriter();
+
+        String data = req.getParameter("json");
+        String decodedContent = "";
+        if (data != null) {
+            decodedContent = URLDecoder.decode(data, "UTF-8");
+        } else {
+            throw new IOException("Data illegal");
+        }
+        JSONObject json = (JSONObject) JSONValue.parse(decodedContent);
+        String username = (String) json.get(USERNAME_STRING);
+        long id;
+        if (json.get(ID_STRING) != null) {
+            id = (long) json.get(ID_STRING);
+            LOGGER.log(Level.INFO, "Deleteing transaction with id: " + id);
+        } else {
+            id = 0;
+        }
+        if (username == null || id == 0 || username.isEmpty()) {
+            out.print("Invalid request: missing credential");
+            LOGGER.log(Level.WARNING, "Missing Credentials in deleting transactions.");
+            return;
+        }
+        LOGGER.log(Level.INFO, Transaction.deleteTransaction(id));
+    }
+
 }
