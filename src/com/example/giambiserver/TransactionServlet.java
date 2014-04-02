@@ -21,7 +21,7 @@ import com.google.appengine.api.datastore.Entity;
 /**
  * 
  * @author haolidu
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class TransactionServlet extends HttpServlet {
@@ -70,9 +70,10 @@ public class TransactionServlet extends HttpServlet {
      * 
      */
     private static final String ID_IS_EMPTY = "Invalid request: id is empty";
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws IOException {
+            throws IOException {
         resp.setContentType(TEXT_STRING);
         PrintWriter out = resp.getWriter();
 
@@ -132,7 +133,7 @@ public class TransactionServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
-        throws IOException {
+            throws IOException {
         resp.setContentType(TEXT_STRING);
         PrintWriter out = resp.getWriter();
 
@@ -165,7 +166,12 @@ public class TransactionServlet extends HttpServlet {
         String createDate = (String) json.get(CREATEDATE_STRING);
         String merchant = (String) json.get(MERCHANT_STRING);
         String accountNumber = (String) json.get(ACCOUNTNUMBER_STRING);
-        long id = (long) json.get(ID_STRING);
+        long id;
+        if (json.get(ID_STRING) != null) {
+            id = (long) json.get(ID_STRING);
+        } else {
+            id = 0;
+        }
         if (amount == null || amount.isEmpty()) {
             amount = "0";
         }
