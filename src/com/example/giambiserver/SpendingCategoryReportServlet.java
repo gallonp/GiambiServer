@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.Date;
 
 public class SpendingCategoryReportServlet extends HttpServlet {
-    //private enum FIELDS {Category, Amount}
     private static final java.util.logging.Logger logger = java.util.logging.Logger
             .getLogger(SpendingCategoryReportServlet.class.getCanonicalName());
 
@@ -77,44 +76,13 @@ public class SpendingCategoryReportServlet extends HttpServlet {
         		categoryAmountMap.put(thisProperty, Double.valueOf((String) transList.get(i).getProperty("amount")));
         	}
         }
-        /*
-        for (int i = 0; i < listLength; i++) {
-            String thisAmountString = (String) transList.get(i).getProperty("amount");
-            String thisProperty = (String) transList.get(i).getProperty("category");
-            Double thisAmount = Double.valueOf(thisAmountString);
-            Double oldAmount = categoryAmountMap.get(thisProperty);
-            Double newAmount = oldAmount + thisAmount;
-            categoryAmountMap.put(thisProperty, newAmount);
-        }
-        Object[] categories = transCategories.toArray();
-        
-//        JSONObject returnData = new JSONObject();
-//        JSONObject returnObject = new JSONObject();
-//        returnData.putAll(categoryAmountMap);
-//        returnObject.put("Data", returnData);
-//        returnObject.writeJSONString(respWriter);
-        //		JSONArray returnArray = new JSONArray();'
-       // JSONObject returnObj = new JSONObject();
-        logger.log(Level.INFO,categoryAmountMap.size() + "");
-        for (int i = 0; i < categoryAmountMap.size(); i++) {
-            String newCategory = (String) categories[i];
-            String newAmount = String.valueOf(categoryAmountMap.get(categories[i]));
-            JSONObject thisObj = new JSONObject();
-            thisObj.put(newCategory, newAmount);
-            returnArr.add(thisObj);
-//			returnArray.add(returnString);
-        }
-        */
         for (String s : transCategories) {
         	JSONObject thisObj = new JSONObject();
         	thisObj.put(s, String.valueOf(categoryAmountMap.get(s)));
         	returnArr.add(thisObj);
         }
         returnData.put("Data", returnArr);
-       // returnData.put("Data", returnObj);
         returnData.writeJSONString(respWriter);
         logger.log(Level.INFO,returnData.toJSONString());
-//        returnObj.writeJSONString(respWriter);
-
     }
 }
