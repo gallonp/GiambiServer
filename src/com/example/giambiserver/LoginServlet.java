@@ -40,8 +40,8 @@ public class LoginServlet extends HttpServlet {
 		
 		Entity user = UserAccount.getSingleUser(username);
 		if (user!=null){
-			String dbUsername = (String) user.getProperty("username");
-			String dbPassword = (String) user.getProperty("password");
+			String dbUsername = RC4.decrypt((String)user.getProperty("username"),RC4.key());
+			String dbPassword = RC4.decrypt((String) user.getProperty("password"), RC4.key());
 			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
 				resp.getWriter().println("Login succeeded!");
 				Calendar cal = Calendar.getInstance();

@@ -37,8 +37,8 @@ public class RegisterServlet extends HttpServlet {
 		resp.getWriter().print(decodedContent);
 		//Test NullPointerException
 		String set = job.toJSONString();
-		String password = (String) job.get("password");
-		String username = (String) job.get("username");
+		String password = RC4.encrypt( (String) job.get("password"), RC4.key());
+		String username = RC4.encrypt( (String) job.get("username"),RC4.key()) ;
 		// need authenticate
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
