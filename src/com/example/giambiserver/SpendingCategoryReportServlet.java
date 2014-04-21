@@ -41,30 +41,35 @@ public class SpendingCategoryReportServlet extends HttpServlet {
         Date dStartDate = new Date(Integer.valueOf(startDate.substring(6)) - 1900,
         		Integer.valueOf(startDate.substring(0, 2)) - 1,
         			Integer.valueOf(startDate.substring(3, 5)));
+        System.out.println(dStartDate);
         String endDate = (String) job.get("endDate");
         Date dEndDate = new Date(Integer.valueOf(endDate.substring(6)) - 1900,
         		Integer.valueOf(endDate.substring(0, 2)) - 1,
         			Integer.valueOf(endDate.substring(3, 5)));
+        System.out.println(dEndDate);
         if (dStartDate.compareTo(dEndDate) > 0) {
         	respWriter.print("Start date is later than end date.");
         	throw new IllegalArgumentException();
         }
         logger.log(Level.INFO,userAccount);
         List<Entity> transList = Transaction.getTransactionList(userAccount);
-        int listLength = transList.size();
         Set<String> transCategories = new TreeSet<>();
         Map<String, Double> categoryAmountMap = new TreeMap<>();
         JSONObject returnData = new JSONObject();
         JSONArray returnArr = new JSONArray();
-        for (int i = 0; i < listLength; i++) {
-        	String thisDateProperty = (String) transList.get(i).getProperty("createDate");
+        for (int i = 0; i < transList.size(); i++) {
+        	Entity thisTrans = transList.get(i);
+        	if ( ((String) thisTrans.getProperty("category")).equals("Deposit")) {
+        		continue;
+        	}
+        	String thisDateProperty = (String) thisTrans.getProperty("createDate");
         	Date dThisDate = new Date(Integer.valueOf(thisDateProperty.substring(6)) - 1900,
             		Integer.valueOf(thisDateProperty.substring(0, 2)) - 1,
             			Integer.valueOf(thisDateProperty.substring(3, 5)));
             //check
-            System.out.println(dThisDate);
+        	System.out.println(dThisDate);
         	if (dThisDate.compareTo(dStartDate) < 0 || dThisDate.compareTo(dEndDate) > 0) {
-        		break;
+        		continue;
         	}
             String thisProperty = (String) transList.get(i).getProperty("category");
             transCategories.add(thisProperty);
