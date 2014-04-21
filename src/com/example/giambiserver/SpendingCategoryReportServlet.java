@@ -41,12 +41,10 @@ public class SpendingCategoryReportServlet extends HttpServlet {
         Date dStartDate = new Date(Integer.valueOf(startDate.substring(6)) - 1900,
         		Integer.valueOf(startDate.substring(0, 2)) - 1,
         			Integer.valueOf(startDate.substring(3, 5)));
-        System.out.println(dStartDate);
         String endDate = (String) job.get("endDate");
         Date dEndDate = new Date(Integer.valueOf(endDate.substring(6)) - 1900,
         		Integer.valueOf(endDate.substring(0, 2)) - 1,
         			Integer.valueOf(endDate.substring(3, 5)));
-        System.out.println(dEndDate);
         if (dStartDate.compareTo(dEndDate) > 0) {
         	respWriter.print("Start date is later than end date.");
         	throw new IllegalArgumentException();
@@ -67,7 +65,6 @@ public class SpendingCategoryReportServlet extends HttpServlet {
             		Integer.valueOf(thisDateProperty.substring(0, 2)) - 1,
             			Integer.valueOf(thisDateProperty.substring(3, 5)));
             //check
-        	System.out.println(dThisDate);
         	if (dThisDate.compareTo(dStartDate) < 0 || dThisDate.compareTo(dEndDate) > 0) {
         		continue;
         	}
