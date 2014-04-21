@@ -3,6 +3,8 @@ package com.example.giambiserver;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +19,8 @@ import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings("serial")
 public class LoginServlet extends HttpServlet {
-
+        private static final Logger logger = Logger.getLogger(BankAccount.class
+            .getCanonicalName());
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
@@ -37,13 +40,20 @@ public class LoginServlet extends HttpServlet {
 		resp.getWriter().print(decodedContent);
 		String password = (String) job.get("password");
 		String username = (String) job.get("username");
+		password = RC4.encrypt(password, RC4.key());
+		username = RC4.encrypt(username, RC4.key());
+		logger.log(Level.WARNING, "Username!!!!!!----!!!!: " + RC4.decrypt(username, RC4.key()));
 		
 		Entity user = UserAccount.getSingleUser(username);
 		if (user!=null){
-			String dbUsername = RC4.decrypt((String)user.getProperty("username"),RC4.key());
-			String dbPassword = RC4.decrypt((String) user.getProperty("password"), RC4.key());
+			String dbUsername = (String)user.getProperty("username");
+			logger.log(Level.WARNING, "Bank account: " + dbUsername
+		                + " not found. Balance NOT updated.");
+			String dbPassword = (String) user.getProperty("password");
 			if (username.equalsIgnoreCase(dbUsername)&&password.equalsIgnoreCase(dbPassword)){
-				resp.getWriter().println("Login succeeded!");
+			        
+				resp.getWriter().println("Login succeeded! ");
+				
 				Calendar cal = Calendar.getInstance();
 				String userAndTime = username +","+ cal.getTime().toString();
 				Cookie cookie = new Cookie("auth-cookie", Integer.toString(userAndTime.hashCode()));
